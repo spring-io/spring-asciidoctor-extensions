@@ -1,22 +1,43 @@
-apply plugin: 'java'
-apply plugin: 'maven-publish'
+plugins {
+	id "com.jfrog.artifactory" version "4.4.0"
+	id 'java'
+	id 'maven'
+}
 
 group = 'io.spring.asciidoctor'
+
+apply from: 'gradle/publish-maven.gradle'
 
 repositories {
 	mavenCentral()
 }
 
+ext {
+	asciidoctorjVersion = '1.5.4.1'
+}
+
 dependencies {
-	compile 'org.asciidoctor:asciidoctorj:1.5.4.1'
+	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
+	testCompile "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 	testCompile 'junit:junit:4.12'
 	testCompile 'org.assertj:assertj-core:2.6.0'
 }
 
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
+artifactory {
+	contextUrl = 'https://repo.spring.io'
+	publish {
+		repository {
+			repoKey = 'libs-snapshot-local'
+			if (project.hasProperty('artifactoryUsername')
+					&& project.hasProperty('artifactoryPassword')) {
+				username = artifactoryUsername
+				password = artifactoryPassword
+			}
 		}
 	}
+}
+
+artifactoryPublish {
+	publishConfigs 'archives'
+	publishIvy false
 }

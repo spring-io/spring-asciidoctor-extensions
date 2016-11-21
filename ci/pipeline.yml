@@ -1,0 +1,26 @@
+resources:
+  - name: spring-asciidoctor-extensions
+    type: git
+    source:
+      uri: https://github.com/spring-io/spring-asciidoctor-extensions
+      branch: master
+jobs:
+  - name: unit-test
+    public: true
+    plan:
+    - get: spring-asciidoctor-extensions
+      trigger: true
+    - task: unit-test
+      file: spring-asciidoctor-extensions/ci/unit-test.yml
+  - name: deploy
+    public: true
+    plan:
+    - get: spring-asciidoctor-extensions
+      passed:
+      - unit-test
+      trigger: true
+    - task: deploy
+      file: spring-asciidoctor-extensions/ci/deploy.yml
+      params:
+      - ARTIFACTORY_USERNAME: {{artifactory_username}}
+      - ARTIFACTORY_PASSWORD: {{artifactory_password}}

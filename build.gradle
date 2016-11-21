@@ -16,6 +16,9 @@ ext {
 	asciidoctorjVersion = '1.5.4.1'
 }
 
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+
 dependencies {
 	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 	testCompile "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"

@@ -1,0 +1,22 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+group = 'io.spring.asciidoctor'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile 'org.asciidoctor:asciidoctorj:1.5.4.1'
+	testCompile 'junit:junit:4.12'
+	testCompile 'org.assertj:assertj-core:2.6.0'
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+}

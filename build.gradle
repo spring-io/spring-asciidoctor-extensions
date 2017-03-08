@@ -50,7 +50,7 @@ artifactory {
 	contextUrl = 'https://repo.spring.io'
 	publish {
 		repository {
-			repoKey = 'libs-snapshot-local'
+			repoKey = 'libs-release-local'
 			if (project.hasProperty('artifactoryUsername')
 					&& project.hasProperty('artifactoryPassword')) {
 				username = artifactoryUsername

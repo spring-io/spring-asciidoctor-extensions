@@ -23,8 +23,8 @@ Add a dependency to your existing configuration of the `asciidoctor-maven-plugin
 	<inherited>false</inherited>
 	<dependencies>
 		<dependency>
-	        <groupId>org.springframework.cloud</groupId>
-		    <artifactId>spring-cloud-contract-docs-extensions</artifactId>
+	        <groupId>io.spring.asciidoctor</groupId>
+		    <artifactId>spring-asciidoctor-extensions</artifactId>
 		    <version>${project.version}</version>
 		</dependency>
 	</dependencies>

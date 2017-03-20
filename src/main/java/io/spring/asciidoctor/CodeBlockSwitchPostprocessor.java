@@ -35,7 +35,7 @@ public class CodeBlockSwitchPostprocessor extends Postprocessor {
 		String css = readResource("/codeBlockSwitch.css");
 		String javascript = readResource("/codeBlockSwitch.js");
 		String replacement = String.format("<style>%n%s%n</style>%n" +
-				"<script src=\"http://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js\"></script>%n" +
+				"<script src=\"https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js\"></script>%n" +
 				"<script type=\"text/javascript\">%n%s%n</script>%n</head>%n", css, javascript);
 		return output.replace("</head>", replacement);
 	}

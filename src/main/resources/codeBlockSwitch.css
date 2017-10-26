@@ -17,6 +17,12 @@
 	cursor: pointer;
 }
 
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
 .switch--item.selected {
 	background-color: #7a2519;
 	color: #ffffff;

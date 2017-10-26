@@ -2,14 +2,15 @@
 
 == Using the extensions
 
-The extensions can be used by adding a dependency to your Maven or Gradle build:
+The extensions are published to the https://repo.spring.io/release Maven repository.
+They can be used by adding a dependency to your Maven or Gradle build:
 
 === Gradle
 
 Add a dependency on the extensions to the `asciidoctor` configuration:
 
 ----
-asciidoctor 'io.spring.asciidoctor:spring-asciidoctor-extensions:version'
+asciidoctor 'io.spring.asciidoctor:spring-asciidoctor-extensions:<<version>>'
 ----
 
 === Maven
@@ -24,7 +25,7 @@ Add a dependency to your existing configuration of the `asciidoctor-maven-plugin
 		<dependency>
 			<groupId>io.spring.asciidoctor</groupId>
 			<artifactId>spring-asciidoctor-extensions</artifactId>
-			<version>${project.version}</version>
+			<version><<version>></version>
 		</dependency>
 	</dependencies>
 </plugin>

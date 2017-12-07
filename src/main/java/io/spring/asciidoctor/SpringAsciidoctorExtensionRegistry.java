@@ -28,7 +28,7 @@ public class SpringAsciidoctorExtensionRegistry implements ExtensionRegistry {
 
 	@Override
 	public void register(Asciidoctor asciidoctor) {
-		asciidoctor.javaExtensionRegistry().postprocessor(new CodeBlockSwitchPostprocessor());
+		asciidoctor.javaExtensionRegistry().docinfoProcessor(new CodeBlockSwitchDocinfoProcessor());
 	}
 
 }

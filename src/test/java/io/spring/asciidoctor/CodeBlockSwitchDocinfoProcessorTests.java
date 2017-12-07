@@ -18,21 +18,23 @@ package io.spring.asciidoctor;
 
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Options;
+import org.asciidoctor.SafeMode;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link CodeBlockSwitchPostprocessor}.
+ * Tests for {@link CodeBlockSwitchDocinfoProcessor}.
  *
  * @author Andy Wilkinson
  */
-public class CodeBlockSwitchPostProcessorTests {
+public class CodeBlockSwitchDocinfoProcessorTests {
 
 	@Test
 	public void postProcessorIsApplied() {
 		Options options = new Options();
 		options.setHeaderFooter(true);
+		options.setSafe(SafeMode.SERVER);
 		String converted = Asciidoctor.Factory.create().convert(String.format("test"), options);
 		assertThat(converted).contains(".switch--item.selected");
 		assertThat(converted).contains("function addBlockSwitches()");

@@ -17,6 +17,7 @@
 package io.spring.asciidoctor;
 
 import org.asciidoctor.ast.Document;
+import org.asciidoctor.extension.DocinfoProcessor;
 import org.asciidoctor.extension.Postprocessor;
 
 import java.io.IOException;
@@ -29,15 +30,15 @@ import java.io.StringWriter;
  *
  * @author Andy Wilkinson
  */
-public class CodeBlockSwitchPostprocessor extends Postprocessor {
+class CodeBlockSwitchDocinfoProcessor extends DocinfoProcessor {
 
-	public String process(Document document, String output) {
+	@Override
+	public String process(Document document) {
 		String css = readResource("/codeBlockSwitch.css");
 		String javascript = readResource("/codeBlockSwitch.js");
-		String replacement = String.format("<style>%n%s%n</style>%n" +
+		return String.format("<style>%n%s%n</style>%n" +
 				"<script src=\"https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js\"></script>%n" +
-				"<script type=\"text/javascript\">%n%s%n</script>%n</head>%n", css, javascript);
-		return output.replace("</head>", replacement);
+				"<script type=\"text/javascript\">%n%s%n</script>%n", css, javascript);
 	}
 
 	private String readResource(String name) {

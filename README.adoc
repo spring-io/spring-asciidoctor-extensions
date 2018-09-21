@@ -10,6 +10,10 @@ They can be used by adding a dependency to your Maven or Gradle build:
 Add a dependency on the extensions to the `asciidoctor` configuration:
 
 ----
+repositories {
+    maven { url "https://repo.spring.io/release"  }
+}
+...
 asciidoctor 'io.spring.asciidoctor:spring-asciidoctor-extensions:<<version>>'
 ----
 
@@ -18,6 +22,16 @@ asciidoctor 'io.spring.asciidoctor:spring-asciidoctor-extensions:<<version>>'
 Add a dependency to your existing configuration of the `asciidoctor-maven-plugin`:
 
 ----
+...
+  <repositories>
+    <repository>
+      <id>springiorelease</id>
+      <name>spring io release</name>
+      <url>https://repo.spring.io/release</url>
+    </repository>
+    ...
+  </repositories>
+...    
 <plugin>
 	<groupId>org.asciidoctor</groupId>
 	<artifactId>asciidoctor-maven-plugin</artifactId>
@@ -31,13 +45,15 @@ Add a dependency to your existing configuration of the `asciidoctor-maven-plugin
 </plugin>
 ----
 
+The list of available versions can be directly obtained from hte repository: https://repo.spring.io/release/io/spring/asciidoctor/spring-asciidoctor-extensions/
+
 == Available extensions
 
 === Code block switch
 
 Post-processes Asciidoctor's HTML output to collapse multiple code blocks into one and provides
 tabs that can be used to switch between them. Requires one block that has a `role="primary"`
-attribute and one more blocks that have a `role="secondary"` attribute. The tabs are named using
+attribute and one or more blocks that have a `role="secondary"` attribute. The tabs are named using
 the block titles.
 
 For example:

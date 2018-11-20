@@ -1,3 +1,5 @@
+:version: 0.1.3.RELEASE
+
 = Spring Asciidoctor Extensions
 
 == Using the extensions
@@ -7,16 +9,42 @@ They can be used by adding a dependency to your Maven or Gradle build:
 
 === Gradle
 
+Make the Spring release repository available to your build:
+
+[source,groovy,subs="verbatim,attributes"]
+----
+repositories {
+    maven { url "https://repo.spring.io/release"  }
+}
+----
+
 Add a dependency on the extensions to the `asciidoctor` configuration:
 
+[source,groovy,subs="verbatim,attributes"]
 ----
-asciidoctor 'io.spring.asciidoctor:spring-asciidoctor-extensions:<<version>>'
+dependencies {
+    asciidoctor 'io.spring.asciidoctor:spring-asciidoctor-extensions:{version}'
+}
 ----
 
 === Maven
 
+Make the Spring release repository available to your build:
+
+[source,xml,subs="verbatim,attributes"]
+----
+<repositories>
+    <repository>
+        <id>spring-release</id>
+        <name>Spring Release</name>
+        <url>https://repo.spring.io/release</url>
+    </repository>
+</repositories>
+----
+
 Add a dependency to your existing configuration of the `asciidoctor-maven-plugin`:
 
+[source,xml,subs="verbatim,attributes"]
 ----
 <plugin>
 	<groupId>org.asciidoctor</groupId>
@@ -25,7 +53,7 @@ Add a dependency to your existing configuration of the `asciidoctor-maven-plugin
 		<dependency>
 			<groupId>io.spring.asciidoctor</groupId>
 			<artifactId>spring-asciidoctor-extensions</artifactId>
-			<version><<version>></version>
+			<version>{version}</version>
 		</dependency>
 	</dependencies>
 </plugin>
@@ -37,12 +65,12 @@ Add a dependency to your existing configuration of the `asciidoctor-maven-plugin
 
 Post-processes Asciidoctor's HTML output to collapse multiple code blocks into one and provides
 tabs that can be used to switch between them. Requires one block that has a `role="primary"`
-attribute and one more blocks that have a `role="secondary"` attribute. The tabs are named using
+attribute and one or more blocks that have a `role="secondary"` attribute. The tabs are named using
 the block titles.
 
 For example:
 
-[source,indent=0]
+[source,subs="verbatim,attributes"]
 ....
 [source,xml,indent=0,role="primary"]
 .Maven

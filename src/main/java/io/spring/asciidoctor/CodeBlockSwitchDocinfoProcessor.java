@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 the original author or authors.
+ * Copyright 2014-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 package io.spring.asciidoctor;
 
-import org.asciidoctor.ast.Document;
-import org.asciidoctor.extension.DocinfoProcessor;
-import org.asciidoctor.extension.Postprocessor;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
+
+import org.asciidoctor.ast.Document;
+import org.asciidoctor.extension.DocinfoProcessor;
+import org.asciidoctor.extension.Postprocessor;
 
 /**
  * A {@link Postprocessor} that injects the JavaScript and CSS for the code block switch.
@@ -36,9 +36,9 @@ class CodeBlockSwitchDocinfoProcessor extends DocinfoProcessor {
 	public String process(Document document) {
 		String css = readResource("/codeBlockSwitch.css");
 		String javascript = readResource("/codeBlockSwitch.js");
-		return String.format("<style>%n%s%n</style>%n" +
-				"<script src=\"https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js\"></script>%n" +
-				"<script type=\"text/javascript\">%n%s%n</script>%n", css, javascript);
+		return String.format("<style>%n%s%n</style>%n"
+				+ "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js\"></script>%n"
+				+ "<script type=\"text/javascript\">%n%s%n</script>%n", css, javascript);
 	}
 
 	private String readResource(String name) {
@@ -54,10 +54,12 @@ class CodeBlockSwitchDocinfoProcessor extends DocinfoProcessor {
 		}
 		catch (Exception ex) {
 			throw new IllegalStateException("Failed to read '" + name + "'", ex);
-		} finally {
+		}
+		finally {
 			try {
 				reader.close();
-			} catch (IOException ex) {
+			}
+			catch (IOException ex) {
 				// Continue
 			}
 		}

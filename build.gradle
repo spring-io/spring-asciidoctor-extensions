@@ -1,5 +1,15 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "io.spring.javaformat:spring-javaformat-gradle-plugin:$springJavaFormatVersion"
+	}
+}
+
 plugins {
-	id "com.jfrog.artifactory" version "4.4.13"
+	id 'checkstyle'
+	id 'com.jfrog.artifactory' version '4.4.13'
 	id 'java'
 	id 'maven'
 }
@@ -8,6 +18,7 @@ group = 'io.spring.asciidoctor'
 description = 'Spring Asciidoctor Extensions'
 
 apply from: 'gradle/publish-maven.gradle'
+apply plugin: 'io.spring.javaformat'
 
 repositories {
 	mavenCentral()
@@ -21,6 +32,7 @@ sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
 
 dependencies {
+	checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:$springJavaFormatVersion"
 	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 	testCompile "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 	testCompile 'junit:junit:4.12'

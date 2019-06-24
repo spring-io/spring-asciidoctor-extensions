@@ -35,7 +35,7 @@ dependencies {
 	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 	testCompile "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 	testCompile 'junit:junit:4.12'
-	testCompile 'org.assertj:assertj-core:2.6.0'
+	testCompile 'org.assertj:assertj-core:3.11.1'
 }
 
 nohttp {

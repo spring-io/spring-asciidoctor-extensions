@@ -12,6 +12,7 @@ plugins {
 	id 'com.jfrog.artifactory' version '4.4.13'
 	id 'java'
 	id 'maven'
+	id 'io.spring.nohttp' version '0.0.3.RELEASE'
 }
 
 group = 'io.spring.asciidoctor'

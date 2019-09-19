@@ -1,6 +1,7 @@
 buildscript {
 	repositories {
 		mavenCentral()
+		mavenLocal()
 	}
 	dependencies {
 		classpath "io.spring.javaformat:spring-javaformat-gradle-plugin:$springJavaFormatVersion"
@@ -20,6 +21,7 @@ description = 'Spring Asciidoctor Extensions'
 
 apply from: 'gradle/publish-maven.gradle'
 apply plugin: 'io.spring.javaformat'
+apply plugin: 'io.spring.compatibility-test'
 
 repositories {
 	mavenCentral()
@@ -34,6 +36,18 @@ dependencies {
 	testCompile "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 	testCompile 'junit:junit:4.12'
 	testCompile 'org.assertj:assertj-core:2.6.0'
+}
+
+nohttp {
+	source.exclude "buildSrc/**"
+}
+
+compatibilityTest {
+	dependency('AsciidoctorJ') { asciidoctorj ->
+		asciidoctorj.groupId = 'org.asciidoctor'
+		asciidoctorj.artifactId = 'asciidoctorj'
+		asciidoctorj.versions = [ '1.6.2' ]
+	}
 }
 
 javadoc {

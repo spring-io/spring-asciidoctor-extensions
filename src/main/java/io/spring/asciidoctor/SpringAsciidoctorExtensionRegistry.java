@@ -16,7 +16,10 @@
 
 package io.spring.asciidoctor;
 
+import java.lang.reflect.Method;
+
 import org.asciidoctor.Asciidoctor;
+import org.asciidoctor.extension.DocinfoProcessor;
 import org.asciidoctor.extension.spi.ExtensionRegistry;
 
 /**
@@ -28,7 +31,15 @@ public class SpringAsciidoctorExtensionRegistry implements ExtensionRegistry {
 
 	@Override
 	public void register(Asciidoctor asciidoctor) {
-		asciidoctor.javaExtensionRegistry().docinfoProcessor(new CodeBlockSwitchDocinfoProcessor());
+		Object javaExtensionRegistry = asciidoctor.javaExtensionRegistry();
+		try {
+			Method docinfoProcessor = javaExtensionRegistry.getClass().getMethod("docinfoProcessor",
+					DocinfoProcessor.class);
+			docinfoProcessor.invoke(javaExtensionRegistry, new CodeBlockSwitchDocinfoProcessor());
+		}
+		catch (Exception ex) {
+			throw new RuntimeException("Failed to register " + CodeBlockSwitchDocinfoProcessor.class.getSimpleName());
+		}
 	}
 
 }

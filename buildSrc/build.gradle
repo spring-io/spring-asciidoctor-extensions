@@ -1,0 +1,41 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "io.spring.javaformat:spring-javaformat-gradle-plugin:$springJavaFormatVersion"
+	}
+}
+
+plugins {
+	id 'checkstyle'
+	id 'io.spring.nohttp' version '0.0.3.RELEASE'
+	id 'java-gradle-plugin'
+	id 'maven-publish'
+}
+
+apply plugin: 'io.spring.javaformat'
+
+group 'io.spring.gradle'
+
+gradlePlugin {
+	plugins {
+		create('compatibilityTest') {
+			id = 'io.spring.compatibility-test'
+			implementationClass = 'io.spring.gradle.compatibilitytest.CompatibilityTestPlugin'
+		}
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:$springJavaFormatVersion"
+	testCompile 'org.assertj:assertj-core:3.11.1'
+	testCompile 'junit:junit:4.12'
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'

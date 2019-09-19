@@ -1,26 +1,233 @@
+resource_types:
+- name: artifactory-resource
+  type: docker-image
+  source:
+    repository: springio/artifactory-resource
+    tag: 0.0.7
 resources:
-  - name: spring-asciidoctor-extensions
-    type: git
-    source:
-      uri: https://github.com/spring-io/spring-asciidoctor-extensions
-      branch: master
+- name: git-repo
+  type: git
+  source:
+    uri: ((github-repo))
+    username: ((github-username))
+    password: ((github-password))
+    branch: ((branch))
+    ignore_paths: ["ci/images/*"]
+- name: github-pre-release
+  type: github-release
+  source:
+    owner: spring-io
+    repository: spring-asciidoctor-extensions
+    access_token: ((github-release-notes-access-token))
+    pre_release: true
+- name: github-release
+  type: github-release
+  source:
+    owner: spring-io
+    repository: spring-asciidoctor-extensions
+    access_token: ((github-release-notes-access-token))
+    pre_release: false
+- name: ci-images-git-repo
+  type: git
+  source:
+    uri: ((github-repo))
+    branch: ((branch))
+    paths: ["ci/images/*"]
+- name: spring-asciidoctor-extensions-ci-image
+  type: docker-image
+  source:
+    repository: ((docker-hub-organization))/spring-asciidoctor-extensions-ci-image
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    tag: ((branch))
+- name: artifactory-repo
+  type: artifactory-resource
+  source:
+    uri: ((artifactory-server))
+    username: ((artifactory-username))
+    password: ((artifactory-password))
+    build_name: ((build-name))
 jobs:
-  - name: unit-test
-    public: true
-    plan:
-    - get: spring-asciidoctor-extensions
-      trigger: true
-    - task: unit-test
-      file: spring-asciidoctor-extensions/ci/unit-test.yml
-  - name: deploy
-    public: true
-    plan:
-    - get: spring-asciidoctor-extensions
-      passed:
-      - unit-test
-      trigger: true
-    - task: deploy
-      file: spring-asciidoctor-extensions/ci/deploy.yml
-      params:
-      - ARTIFACTORY_USERNAME: {{artifactory_username}}
-      - ARTIFACTORY_PASSWORD: {{artifactory_password}}
+- name: build-spring-asciidoctor-extensions-ci-images
+  plan:
+  - get: ci-images-git-repo
+    trigger: true
+  - put: spring-asciidoctor-extensions-ci-image
+    params:
+      build: ci-images-git-repo/ci/images/spring-asciidoctor-extensions-ci-image
+- name: build
+  serial: true
+  public: true
+  plan:
+  - get: spring-asciidoctor-extensions-ci-image
+  - get: git-repo
+    trigger: true
+  - do:
+    - task: build-project
+      privileged: true
+      timeout: 1h30m
+      image: spring-asciidoctor-extensions-ci-image
+      file: git-repo/ci/tasks/build-project.yml
+  - put: artifactory-repo
+    params: &artifactory-params
+      repo: libs-snapshot-local
+      build_number: "${BUILD_ID}"
+      folder: distribution-repository
+      build_uri: "https://ci.spring.io/teams/${BUILD_TEAM_NAME}/pipelines/${BUILD_PIPELINE_NAME}/jobs/${BUILD_JOB_NAME}/builds/${BUILD_NAME}"
+      build_number: "${BUILD_PIPELINE_NAME}-${BUILD_JOB_NAME}-${BUILD_NAME}"
+      disable_checksum_uploads: true
+- name: stage-milestone
+  serial: true
+  plan:
+  - get: spring-asciidoctor-extensions-ci-image
+  - get: git-repo
+    trigger: false
+  - task: stage
+    image: spring-asciidoctor-extensions-ci-image
+    file: git-repo/ci/tasks/stage.yml
+    params:
+      RELEASE_TYPE: M
+  - put: artifactory-repo
+    params:
+      <<: *artifactory-params
+      repo: libs-staging-local
+  - put: git-repo
+    params:
+      repository: stage-git-repo
+- name: stage-rc
+  serial: true
+  plan:
+  - get: spring-asciidoctor-extensions-ci-image
+  - get: git-repo
+    trigger: false
+  - task: stage
+    image: spring-asciidoctor-extensions-ci-image
+    file: git-repo/ci/tasks/stage.yml
+    params:
+      RELEASE_TYPE: RC
+  - put: artifactory-repo
+    params:
+      <<: *artifactory-params
+      repo: libs-staging-local
+  - put: git-repo
+    params:
+      repository: stage-git-repo
+- name: stage-release
+  serial: true
+  plan:
+  - get: spring-asciidoctor-extensions-ci-image
+  - get: git-repo
+    trigger: false
+  - task: stage
+    image: spring-asciidoctor-extensions-ci-image
+    file: git-repo/ci/tasks/stage.yml
+    params:
+      RELEASE_TYPE: RELEASE
+  - put: artifactory-repo
+    params:
+      <<: *artifactory-params
+      repo: libs-staging-local
+  - put: git-repo
+    params:
+      repository: stage-git-repo
+- name: promote-milestone
+  serial: true
+  plan:
+  - get: spring-asciidoctor-extensions-ci-image
+  - get: git-repo
+    trigger: false
+  - get: artifactory-repo
+    trigger: false
+    passed: [stage-milestone]
+    params:
+      save_build_info: true
+  - task: promote
+    image: spring-asciidoctor-extensions-ci-image
+    file: git-repo/ci/tasks/promote.yml
+    params:
+      RELEASE_TYPE: M
+      ARTIFACTORY_SERVER: ((artifactory-server))
+      ARTIFACTORY_USERNAME: ((artifactory-username))
+      ARTIFACTORY_PASSWORD: ((artifactory-password))
+  - task: generate-release-notes
+    file: git-repo/ci/tasks/generate-release-notes.yml
+    params:
+      RELEASE_TYPE: M
+      GITHUB_USERNAME: ((github-username))
+      GITHUB_TOKEN: ((github-release-notes-access-token))
+  - put: github-pre-release
+    params:
+      name: generated-release-notes/tag
+      tag: generated-release-notes/tag
+      body: generated-release-notes/release-notes.md
+- name: promote-rc
+  serial: true
+  plan:
+  - get: spring-asciidoctor-extensions-ci-image
+  - get: git-repo
+    trigger: false
+  - get: artifactory-repo
+    trigger: false
+    passed: [stage-rc]
+    params:
+      save_build_info: true
+  - task: promote
+    image: spring-asciidoctor-extensions-ci-image
+    file: git-repo/ci/tasks/promote.yml
+    params:
+      RELEASE_TYPE: RC
+      ARTIFACTORY_SERVER: ((artifactory-server))
+      ARTIFACTORY_USERNAME: ((artifactory-username))
+      ARTIFACTORY_PASSWORD: ((artifactory-password))
+  - task: generate-release-notes
+    file: git-repo/ci/tasks/generate-release-notes.yml
+    params:
+      RELEASE_TYPE: RC
+      GITHUB_USERNAME: ((github-username))
+      GITHUB_TOKEN: ((github-release-notes-access-token))
+  - put: github-pre-release
+    params:
+      name: generated-release-notes/tag
+      tag: generated-release-notes/tag
+      body: generated-release-notes/release-notes.md
+- name: promote-release
+  serial: true
+  plan:
+  - get: spring-asciidoctor-extensions-ci-image
+  - get: git-repo
+    trigger: false
+  - get: artifactory-repo
+    trigger: false
+    passed: [stage-release]
+    params:
+      save_build_info: true
+  - task: promote
+    image: spring-asciidoctor-extensions-ci-image
+    file: git-repo/ci/tasks/promote.yml
+    params:
+      RELEASE_TYPE: RELEASE
+      ARTIFACTORY_SERVER: ((artifactory-server))
+      ARTIFACTORY_USERNAME: ((artifactory-username))
+      ARTIFACTORY_PASSWORD: ((artifactory-password))
+      BINTRAY_SUBJECT: ((bintray-subject))
+      BINTRAY_REPO: ((bintray-repo))
+      BINTRAY_USERNAME: ((bintray-username))
+      BINTRAY_API_KEY: ((bintray-api-key))
+  - task: generate-release-notes
+    file: git-repo/ci/tasks/generate-release-notes.yml
+    params:
+      RELEASE_TYPE: RELEASE
+      GITHUB_USERNAME: ((github-username))
+      GITHUB_TOKEN: ((github-release-notes-access-token))
+  - put: github-release
+    params:
+      name: generated-release-notes/tag
+      tag: generated-release-notes/tag
+      body: generated-release-notes/release-notes.md
+groups:
+- name: "Build"
+  jobs: ["build"]
+- name: "Release"
+  jobs: ["stage-milestone", "stage-rc", "stage-release", "promote-milestone", "promote-rc", "promote-release"]
+- name: "CI Images"
+  jobs: ["build-spring-asciidoctor-extensions-ci-images"]

@@ -1,0 +1,8 @@
+github-repo: "https://github.com/spring-io/spring-asciidoctor-extensions.git"
+github-repo-name: "spring-io/spring-asciidoctor-extensions"
+docker-hub-organization: "springci"
+artifactory-server: "https://repo.spring.io"
+branch: "master"
+build-name: "spring-asciidoctor-extensions"
+bintray-subject: "spring"
+bintray-repo: "jars"

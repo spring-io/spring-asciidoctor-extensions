@@ -1,7 +1,6 @@
 buildscript {
 	repositories {
 		mavenCentral()
-		mavenLocal()
 	}
 	dependencies {
 		classpath "io.spring.javaformat:spring-javaformat-gradle-plugin:$springJavaFormatVersion"
@@ -10,9 +9,8 @@ buildscript {
 
 plugins {
 	id 'checkstyle'
-	id 'com.jfrog.artifactory' version '4.4.13'
 	id 'java'
-	id 'maven'
+	id 'maven-publish'
 	id 'io.spring.nohttp' version '0.0.3.RELEASE'
 }
 
@@ -67,23 +65,4 @@ task javadocJar(type: Jar) {
 artifacts {
 	archives sourcesJar
 	archives javadocJar
-}
-
-artifactory {
-	contextUrl = 'https://repo.spring.io'
-	publish {
-		repository {
-			repoKey = 'libs-snapshot-local'
-			if (project.hasProperty('artifactoryUsername')
-					&& project.hasProperty('artifactoryPassword')) {
-				username = artifactoryUsername
-				password = artifactoryPassword
-			}
-		}
-	}
-}
-
-artifactoryPublish {
-	publishConfigs 'archives'
-	publishIvy false
 }

@@ -35,7 +35,7 @@ git add gradle.properties > /dev/null
 git commit -m"Release v$stageVersion" > /dev/null
 git tag -a "v$stageVersion" -m"Release v$stageVersion" > /dev/null
 
-./gradlew --no-daemon clean build install -Dmaven.repo.local=${repository}
+./gradlew --no-daemon build publishToMavenLocal -Dmaven.repo.local=${repository}
 
 git reset --hard HEAD^ > /dev/null
 if [[ $nextVersion != $snapshotVersion ]]; then

@@ -1,0 +1,24 @@
+apply plugin: 'io.spring.compatibility-test'
+apply plugin: 'maven-publish'
+apply from: "$rootDir/gradle/publish-maven.gradle"
+
+dependencies {
+	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
+	testCompile "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
+}
+
+compatibilityTest {
+	dependency('AsciidoctorJ') { asciidoctorj ->
+		asciidoctorj.groupId = 'org.asciidoctor'
+		asciidoctorj.artifactId = 'asciidoctorj'
+		asciidoctorj.versions = [ asciidoctorj16Version ]
+	}
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+}

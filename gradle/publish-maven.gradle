@@ -1,39 +1,37 @@
 publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			pom {
-				name = project.description
-				description = project.description
-				url = "https://github.com/spring-io/spring-asciidoctor-extensions"
-				organization {
-					name = "Spring IO"
-					url = "https://spring.io"
-				}
-				licenses {
-					license {
-						name = 'The Apache Software License, Version 2.0'
-						url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
-						distribution = 'repo'
-					}
-				}
-				scm {
-					url = "https://github.com/spring-io/spring-asciidoctor-extensions"
-					connection = "scm:git:git://github.com/spring-io/spring-asciidoctor-extensions"
-					developerConnection = "scm:git:git://github.com/spring-io/spring-asciidoctor-extensions"
-				}
-				developers {
-					developer {
-						id = "awilkinson"
-						name = "Andy Wilkinson"
-						email = "awilkinson@pivotal.io"
-					}
-				}
-				issueManagement {
-					system = "GitHub"
-					url = "https://github.com/spring-io/spring-asciidoctor-extensions/issues"
+	publications.withType(MavenPublication) {
+		pom {
+			name = project.description
+			description = project.description
+			artifactId = 'spring-asciidoctor-extensions-' + artifactId
+			url = "https://github.com/spring-io/spring-asciidoctor-extensions"
+			organization {
+				name = "Spring IO"
+				url = "https://spring.io"
+			}
+			licenses {
+				license {
+					name = 'The Apache Software License, Version 2.0'
+					url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+					distribution = 'repo'
 				}
 			}
-			from components.java
+			scm {
+				url = "https://github.com/spring-io/spring-asciidoctor-extensions"
+				connection = "scm:git:git://github.com/spring-io/spring-asciidoctor-extensions"
+				developerConnection = "scm:git:git://github.com/spring-io/spring-asciidoctor-extensions"
+			}
+			developers {
+				developer {
+					id = "awilkinson"
+					name = "Andy Wilkinson"
+					email = "awilkinson@pivotal.io"
+				}
+			}
+			issueManagement {
+				system = "GitHub"
+				url = "https://github.com/spring-io/spring-asciidoctor-extensions/issues"
+			}
 		}
 	}
 }

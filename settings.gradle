@@ -16,4 +16,4 @@ pluginManagement {
 }
 
 rootProject.name = 'spring-asciidoctor-extensions'
-include 'spring-asciidoctor-extensions-block-switch'
+include 'block-switch'

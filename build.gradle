@@ -3,20 +3,16 @@ plugins {
 	id 'io.spring.javaformat'  apply false
 }
 
-group = 'io.spring.asciidoctor'
-description = 'Spring Asciidoctor Extensions'
-
 nohttp {
 	source.exclude "buildSrc/**"
 }
 
 subprojects {
+	group = 'io.spring.asciidoctor'
+
 	apply plugin: 'checkstyle'
 	apply plugin: 'io.spring.javaformat'
-	apply plugin: 'io.spring.compatibility-test'
 	apply plugin: 'java'
-	apply plugin: 'maven-publish'
-	apply from: "$rootDir/gradle/publish-maven.gradle"
 
 	sourceCompatibility = '1.8'
 	targetCompatibility = '1.8'
@@ -27,22 +23,8 @@ subprojects {
 
 	dependencies {
 		checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:$springJavaFormatVersion"
-		compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
-		testCompile "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 		testCompile 'junit:junit:4.12'
 		testCompile 'org.assertj:assertj-core:3.11.1'
-	}
-
-	compatibilityTest {
-		dependency('AsciidoctorJ') { asciidoctorj ->
-			asciidoctorj.groupId = 'org.asciidoctor'
-			asciidoctorj.artifactId = 'asciidoctorj'
-			asciidoctorj.versions = [ '1.6.2' ]
-		}
-	}
-
-	javadoc {
-		title = "$project.description $project.version API"
 	}
 
 	task sourcesJar(type: Jar, dependsOn: classes) {
@@ -52,12 +34,10 @@ subprojects {
 
 	task javadocJar(type: Jar) {
 		classifier = "javadoc"
-		from javadoc
 	}
 
 	artifacts {
 		archives sourcesJar
 		archives javadocJar
 	}
-
 }

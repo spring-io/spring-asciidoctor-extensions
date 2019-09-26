@@ -17,3 +17,7 @@ pluginManagement {
 
 rootProject.name = 'spring-asciidoctor-extensions'
 include 'spring-asciidoctor-extensions-block-switch'
+include 'spring-asciidoctor-extensions-spring-boot'
+include 'spring-asciidoctor-extensions-spring-boot:spring-asciidoctor-extensions-spring-boot-core'
+include 'spring-asciidoctor-extensions-spring-boot:spring-asciidoctor-extensions-spring-boot-aj15'
+include 'spring-asciidoctor-extensions-spring-boot:spring-asciidoctor-extensions-spring-boot-aj16'

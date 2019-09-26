@@ -1,0 +1,43 @@
+plugins {
+	id 'com.github.johnrengelman.shadow' version '5.1.0'
+}
+
+apply plugin: 'io.spring.compatibility-test'
+apply plugin: 'maven-publish'
+
+dependencies {
+	runtime project(":spring-asciidoctor-extensions-spring-boot:spring-asciidoctor-extensions-spring-boot-aj15")
+	runtime project(":spring-asciidoctor-extensions-spring-boot:spring-asciidoctor-extensions-spring-boot-aj16")
+	testImplementation "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
+	testImplementation project(":spring-asciidoctor-extensions-spring-boot:spring-asciidoctor-extensions-spring-boot-core")
+}
+
+compatibilityTest {
+	dependency('AsciidoctorJ') { asciidoctorj ->
+		asciidoctorj.groupId = 'org.asciidoctor'
+		asciidoctorj.artifactId = 'asciidoctorj'
+		asciidoctorj.versions = [ asciidoctorj16Version ]
+	}
+}
+
+shadowJar {
+	mergeServiceFiles()
+	classifier = ''
+	relocate 'com.google.gson', 'io.spring.asciidoctor.springboot.gson'
+}
+
+jar {
+	enabled = false
+}
+
+assemble {
+	dependsOn shadowJar
+}
+
+publishing {
+	publications {
+		shadow(MavenPublication) { publication ->
+			project.shadow.component(publication)
+		}
+	}
+}

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.spring.asciidoctor;
+package io.spring.asciidoctor.blockswitch;
 
 import java.lang.reflect.Method;
 
@@ -23,11 +23,11 @@ import org.asciidoctor.extension.DocinfoProcessor;
 import org.asciidoctor.extension.spi.ExtensionRegistry;
 
 /**
- * {@link ExtensionRegistry} for Spring Asciidoctor extensions.
+ * {@link ExtensionRegistry Registry} for the block switch extension.
  *
  * @author Andy Wilkinson
  */
-public class SpringAsciidoctorExtensionRegistry implements ExtensionRegistry {
+public class BlockSwitchExtensionRegistry implements ExtensionRegistry {
 
 	@Override
 	public void register(Asciidoctor asciidoctor) {
@@ -35,10 +35,10 @@ public class SpringAsciidoctorExtensionRegistry implements ExtensionRegistry {
 		try {
 			Method docinfoProcessor = javaExtensionRegistry.getClass().getMethod("docinfoProcessor",
 					DocinfoProcessor.class);
-			docinfoProcessor.invoke(javaExtensionRegistry, new CodeBlockSwitchDocinfoProcessor());
+			docinfoProcessor.invoke(javaExtensionRegistry, new BlockSwitchDocinfoProcessor());
 		}
 		catch (Exception ex) {
-			throw new RuntimeException("Failed to register " + CodeBlockSwitchDocinfoProcessor.class.getSimpleName());
+			throw new RuntimeException("Failed to register " + BlockSwitchDocinfoProcessor.class.getSimpleName());
 		}
 	}
 

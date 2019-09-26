@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.spring.asciidoctor;
+package io.spring.asciidoctor.blockswitch;
 
+import io.spring.asciidoctor.blockswitch.BlockSwitchDocinfoProcessor;
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Options;
 import org.asciidoctor.SafeMode;
@@ -24,11 +25,11 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link CodeBlockSwitchDocinfoProcessor}.
+ * Tests for {@link BlockSwitchDocinfoProcessor}.
  *
  * @author Andy Wilkinson
  */
-public class CodeBlockSwitchDocinfoProcessorTests {
+public class BlockSwitchDocinfoProcessorTests {
 
 	@Test
 	public void postProcessorIsApplied() {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.spring.asciidoctor;
+package io.spring.asciidoctor.blockswitch;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,19 +23,18 @@ import java.io.StringWriter;
 
 import org.asciidoctor.ast.Document;
 import org.asciidoctor.extension.DocinfoProcessor;
-import org.asciidoctor.extension.Postprocessor;
 
 /**
- * A {@link Postprocessor} that injects the JavaScript and CSS for the code block switch.
+ * A {@link DocinfoProcessor} that injects the JavaScript and CSS for the block switch.
  *
  * @author Andy Wilkinson
  */
-class CodeBlockSwitchDocinfoProcessor extends DocinfoProcessor {
+class BlockSwitchDocinfoProcessor extends DocinfoProcessor {
 
 	@Override
 	public String process(Document document) {
-		String css = readResource("/codeBlockSwitch.css");
-		String javascript = readResource("/codeBlockSwitch.js");
+		String css = readResource("/blockSwitch.css");
+		String javascript = readResource("/blockSwitch.js");
 		return String.format("<style>%n%s%n</style>%n"
 				+ "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js\"></script>%n"
 				+ "<script type=\"text/javascript\">%n%s%n</script>%n", css, javascript);

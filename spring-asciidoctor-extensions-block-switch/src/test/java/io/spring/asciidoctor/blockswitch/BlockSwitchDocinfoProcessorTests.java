@@ -16,7 +16,6 @@
 
 package io.spring.asciidoctor.blockswitch;
 
-import io.spring.asciidoctor.blockswitch.BlockSwitchDocinfoProcessor;
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Options;
 import org.asciidoctor.SafeMode;

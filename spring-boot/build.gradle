@@ -4,6 +4,7 @@ plugins {
 
 apply plugin: 'io.spring.compatibility-test'
 apply plugin: 'maven-publish'
+apply from: "$rootDir/gradle/publish-maven.gradle"
 
 dependencies {
 	runtime project(":spring-boot:spring-boot-aj15")

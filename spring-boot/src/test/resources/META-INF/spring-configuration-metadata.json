@@ -1,0 +1,14 @@
+{
+	"properties" : [
+		{
+			"name": "example.property.alpha"
+		},
+		{
+			"name": "example.property.bravo",
+			"deprecation": {}
+		},
+		{
+			"name": "example.property.charlie"
+		}
+	]
+}

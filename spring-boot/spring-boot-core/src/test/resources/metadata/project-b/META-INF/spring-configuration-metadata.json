@@ -1,0 +1,14 @@
+{
+	"properties" : [
+		{
+			"name": "project.b.alpha"
+		},
+		{
+			"name": "project.b.bravo-property",
+			"deprecation": {}
+		},
+		{
+			"name": "project.b.charlie"
+		}
+	]
+}

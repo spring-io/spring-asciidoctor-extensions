@@ -11,11 +11,7 @@ Snapshots are published to the https://repo.spring.io/snapshot Maven repository.
 
 === Block switch
 
-==== Coordinates
-
 `io.spring.asciidoctor:spring-asciidoctor-extensions-block-switch`
-
-==== Description
 
 Post-processes Asciidoctor's HTML output to collapse multiple code blocks into one and provides
 tabs that can be used to switch between them. Requires one block that has a `role="primary"`
@@ -42,3 +38,66 @@ For example:
 compile 'com.example:some-library:1.2.3
 ----
 ....
+
+=== Spring Boot
+
+`io.spring.asciidoctor:spring-asciidoctor-extensions-spring-boot`
+
+=== Description
+
+Extension for writing Spring Boot-related documentation. Provides opt-in support for
+verifying the keys in a properties listing exist as configuration properties and a macro
+for verifying that individual configuration properties exist.
+
+==== `configprop` macro
+
+`configprop` macro can be used to reference a configuration property in line as shown in
+the following example:
+
+[source,asciidoctor]
+----
+Use the configprop:server.port[] property to configure the server's port.
+----
+
+The property referenced by the preceding example is `server.port`. If the property exists
+a debug message is logged. If it does not exist or it exists and it is deprecated a
+warning message is logged. A deprecated property can be documented without a warning being
+logged using the `deprecated` attribute, as shown in the following example:
+
+[source,asciidoctor]
+----
+The configprop:example.property[deprecated] property has been deprecated.
+----
+
+If the `deprecated` attribute is specified and the property is not deprecated a warning
+message will be logged.
+
+The macro outputs the name of the property as monospaced text. The format attribute can
+be used to change the output to that required for use as an environment variable, as shown
+in the following example:
+
+[source,asciidoctor]
+----
+Use the configprop:server.port[format=envvar] environment variable to configure the server's port.
+----
+
+The output of the macro in the preceding example is `SERVER_PORT`.
+
+==== Properties listing validation
+
+The extension will validates the properties found in a properties listing with the
+`configprops` attribute, as shown in the following example:
+
+[source,asciidoctor]
+....
+[source,properties,configprops]
+----
+example.property.alpha=a
+example.property.bravo=b
+example.property.charlie=c
+----
+....
+
+A debug message is output for every property in the listing that exists. A warning message
+is output for every property in the listing that does not exist. Properties that are
+bound to a map or that use `[]` notation to configure an item in a list are supported.

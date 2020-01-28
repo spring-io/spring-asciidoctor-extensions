@@ -24,7 +24,7 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link BlockSwitchDocinfoProcessor}.
+ * Tests for {@code BlockSwitchDocinfoProcessor}.
  *
  * @author Andy Wilkinson
  */

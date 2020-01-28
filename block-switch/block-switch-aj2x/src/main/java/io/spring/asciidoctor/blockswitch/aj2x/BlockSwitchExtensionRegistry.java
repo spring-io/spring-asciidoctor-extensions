@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package io.spring.asciidoctor.blockswitch;
+package io.spring.asciidoctor.blockswitch.aj2x;
 
 import java.lang.reflect.Method;
 
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.extension.DocinfoProcessor;
-import org.asciidoctor.extension.spi.ExtensionRegistry;
+import org.asciidoctor.jruby.extension.spi.ExtensionRegistry;
 
 /**
  * {@link ExtensionRegistry Registry} for the block switch extension.

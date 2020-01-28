@@ -1,24 +1,42 @@
+plugins {
+	id 'com.github.johnrengelman.shadow' version '5.1.0'
+}
+
 apply plugin: 'io.spring.compatibility-test'
 apply plugin: 'maven-publish'
 apply from: "$rootDir/gradle/publish-maven.gradle"
 
 dependencies {
-	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
-	testCompile "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
+	runtime project(":block-switch:block-switch-aj1x")
+	runtime project(":block-switch:block-switch-aj2x")
+	testImplementation "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 }
 
 compatibilityTest {
 	dependency('AsciidoctorJ') { asciidoctorj ->
 		asciidoctorj.groupId = 'org.asciidoctor'
 		asciidoctorj.artifactId = 'asciidoctorj'
-		asciidoctorj.versions = [ asciidoctorj16Version ]
+		asciidoctorj.versions = [ asciidoctorj16Version, asciidoctorj2xVersion]
 	}
+}
+
+shadowJar {
+	mergeServiceFiles()
+	classifier = ''
+}
+
+jar {
+	enabled = false
+}
+
+assemble {
+	dependsOn shadowJar
 }
 
 publishing {
 	publications {
-		mavenJava(MavenPublication) {
-			from components.java
+		shadow(MavenPublication) { publication ->
+			project.shadow.component(publication)
 		}
 	}
 }

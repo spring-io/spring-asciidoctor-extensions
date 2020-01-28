@@ -1,0 +1,4 @@
+dependencies {
+	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
+	testCompile "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
+}

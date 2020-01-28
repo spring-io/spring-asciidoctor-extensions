@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.spring.asciidoctor.blockswitch;
+package io.spring.asciidoctor.blockswitch.aj2x;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

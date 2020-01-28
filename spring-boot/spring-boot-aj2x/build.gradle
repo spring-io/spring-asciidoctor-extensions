@@ -1,0 +1,5 @@
+dependencies {
+	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorj2xVersion"
+	implementation project(':spring-boot:spring-boot-core')
+	testCompile "org.asciidoctor:asciidoctorj:$asciidoctorj2xVersion"
+}

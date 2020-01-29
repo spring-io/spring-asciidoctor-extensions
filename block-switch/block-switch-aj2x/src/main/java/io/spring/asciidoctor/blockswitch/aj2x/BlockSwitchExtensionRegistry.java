@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,8 @@
 
 package io.spring.asciidoctor.blockswitch.aj2x;
 
-import java.lang.reflect.Method;
-
 import org.asciidoctor.Asciidoctor;
-import org.asciidoctor.extension.DocinfoProcessor;
+import org.asciidoctor.extension.JavaExtensionRegistry;
 import org.asciidoctor.jruby.extension.spi.ExtensionRegistry;
 
 /**
@@ -31,15 +29,8 @@ public class BlockSwitchExtensionRegistry implements ExtensionRegistry {
 
 	@Override
 	public void register(Asciidoctor asciidoctor) {
-		Object javaExtensionRegistry = asciidoctor.javaExtensionRegistry();
-		try {
-			Method docinfoProcessor = javaExtensionRegistry.getClass().getMethod("docinfoProcessor",
-					DocinfoProcessor.class);
-			docinfoProcessor.invoke(javaExtensionRegistry, new BlockSwitchDocinfoProcessor());
-		}
-		catch (Exception ex) {
-			throw new RuntimeException("Failed to register " + BlockSwitchDocinfoProcessor.class.getSimpleName());
-		}
+		JavaExtensionRegistry extensionRegistry = asciidoctor.javaExtensionRegistry();
+		extensionRegistry.docinfoProcessor(new BlockSwitchDocinfoProcessor());
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,18 +21,14 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 
-import org.asciidoctor.ast.Document;
-import org.asciidoctor.extension.DocinfoProcessor;
-
 /**
- * A {@link DocinfoProcessor} that injects the JavaScript and CSS for the block switch.
+ * Provides the Docinfo for injecting the block switch into HTML output.
  *
  * @author Andy Wilkinson
  */
-class BlockSwitchDocinfoProcessor extends DocinfoProcessor {
+public class BlockSwitchDocinfo {
 
-	@Override
-	public String process(Document document) {
+	public String header() {
 		String css = readResource("/blockSwitch.css");
 		String javascript = readResource("/blockSwitch.js");
 		return String.format("<style>%n%s%n</style>%n"

@@ -9,6 +9,7 @@ apply from: "$rootDir/gradle/publish-maven.gradle"
 dependencies {
 	runtime project(":spring-boot:spring-boot-aj15")
 	runtime project(":spring-boot:spring-boot-aj16")
+	runtime project(":spring-boot:spring-boot-aj2x")
 	testImplementation "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 	testImplementation project(":spring-boot:spring-boot-core")
 }
@@ -17,7 +18,7 @@ compatibilityTest {
 	dependency('AsciidoctorJ') { asciidoctorj ->
 		asciidoctorj.groupId = 'org.asciidoctor'
 		asciidoctorj.artifactId = 'asciidoctorj'
-		asciidoctorj.versions = [ asciidoctorj16Version ]
+		asciidoctorj.versions = [ asciidoctorj16Version, asciidoctorj20Version, asciidoctorj21Version, asciidoctorj22Version ]
 	}
 }
 

@@ -1,0 +1,5 @@
+dependencies {
+	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorj2Version"
+	implementation project(":block-switch:block-switch-core")
+	testCompile "org.asciidoctor:asciidoctorj:$asciidoctorj2Version"
+}

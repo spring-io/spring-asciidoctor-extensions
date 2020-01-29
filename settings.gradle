@@ -17,7 +17,11 @@ pluginManagement {
 
 rootProject.name = 'spring-asciidoctor-extensions'
 include 'block-switch'
+include 'block-switch:block-switch-core'
+include 'block-switch:block-switch-aj1x'
+include 'block-switch:block-switch-aj2x'
 include 'spring-boot'
 include 'spring-boot:spring-boot-core'
 include 'spring-boot:spring-boot-aj15'
 include 'spring-boot:spring-boot-aj16'
+include 'spring-boot:spring-boot-aj2x'

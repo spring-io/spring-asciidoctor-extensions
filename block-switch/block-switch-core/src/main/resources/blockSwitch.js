@@ -1,7 +1,7 @@
 function addBlockSwitches() {
 	$('.primary').each(function() {
 		primary = $(this);
-		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		createSwitchItem(primary, createBlockSwitch(primary));
 		primary.children('.title').remove();
 	});
 	$('.secondary').each(function(idx, node) {
@@ -12,6 +12,7 @@ function addBlockSwitches() {
 		findPrimary(secondary).append(switchItem.content);
 		secondary.remove();
 	});
+	$(".switch--item:contains(" + window.localStorage.getItem("blockSwitch") +")").addClass("selected");
 }
 
 function createBlockSwitch(primary) {
@@ -46,6 +47,7 @@ function globalSwitch() {
 	$('.switch--item').each(function() {
 		$(this).off('click');
 		$(this).on('click', function() {
+			window.localStorage.setItem("blockSwitch", $(this).text());
 			selectedText = $(this).text()
 			selectedIndex = $(this).index()
 			$(".switch--item").filter(function() { return ($(this).text() === selectedText) }).each(function() {

@@ -7,8 +7,8 @@ apply plugin: 'maven-publish'
 apply from: "$rootDir/gradle/publish-maven.gradle"
 
 dependencies {
-	runtime project(":block-switch:block-switch-aj1x")
-	runtime project(":block-switch:block-switch-aj2x")
+	runtimeOnly project(":block-switch:block-switch-aj1x")
+	runtimeOnly project(":block-switch:block-switch-aj2x")
 	testImplementation "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 }
 

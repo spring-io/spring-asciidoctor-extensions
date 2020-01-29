@@ -7,9 +7,9 @@ apply plugin: 'maven-publish'
 apply from: "$rootDir/gradle/publish-maven.gradle"
 
 dependencies {
-	runtime project(":spring-boot:spring-boot-aj15")
-	runtime project(":spring-boot:spring-boot-aj16")
-	runtime project(":spring-boot:spring-boot-aj2x")
+	runtimeOnly project(":spring-boot:spring-boot-aj15")
+	runtimeOnly project(":spring-boot:spring-boot-aj16")
+	runtimeOnly project(":spring-boot:spring-boot-aj2x")
 	testImplementation "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 	testImplementation project(":spring-boot:spring-boot-core")
 }

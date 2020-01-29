@@ -12,6 +12,9 @@ function addBlockSwitches() {
 		findPrimary(secondary).append(switchItem.content);
 		secondary.remove();
 	});
+	if (window.localStorage.getItem("blockSwitch") === null) {
+		window.localStorage.setItem("blockSwitch", $( "div.primary" ).find("div.switch--item").first().text())
+	}
 	$(".switch--item:contains(" + window.localStorage.getItem("blockSwitch") +")").addClass("selected");
 }
 

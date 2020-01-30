@@ -1,3 +1,5 @@
+var blockSwitchGroupNames = new Array();
+
 function addBlockSwitches() {
 	$('.primary').each(function() {
 		primary = $(this);
@@ -11,11 +13,14 @@ function addBlockSwitches() {
 		switchItem.content.addClass('hidden');
 		findPrimary(secondary).append(switchItem.content);
 		secondary.remove();
+		var groupName = primary.find('div.switch--item').text();
+		var firstValue = primary.find('div.switch--item').first().text();
+		var blockSwitchGroupName = "blockSwitch-" + groupName;
+		if (window.localStorage.getItem(blockSwitchGroupName) === null) {
+			window.localStorage.setItem(blockSwitchGroupName, firstValue);
+		}
+		$(".switch--item:contains(" + window.localStorage.getItem(blockSwitchGroupName) +")").addClass("selected");
 	});
-	if (window.localStorage.getItem("blockSwitch") === null) {
-		window.localStorage.setItem("blockSwitch", $( "div.primary" ).find("div.switch--item").first().text())
-	}
-	$(".switch--item:contains(" + window.localStorage.getItem("blockSwitch") +")").addClass("selected");
 }
 
 function createBlockSwitch(primary) {
@@ -50,7 +55,9 @@ function globalSwitch() {
 	$('.switch--item').each(function() {
 		$(this).off('click');
 		$(this).on('click', function() {
-			window.localStorage.setItem("blockSwitch", $(this).text());
+			var groupName = primary.find('div.switch--item').text();
+			var blockSwitchGroupName = "blockSwitch-" + groupName;
+			window.localStorage.setItem(blockSwitchGroupName, $(this).text());
 			selectedText = $(this).text()
 			selectedIndex = $(this).index()
 			$(".switch--item").filter(function() { return ($(this).text() === selectedText) }).each(function() {

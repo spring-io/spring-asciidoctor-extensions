@@ -32,12 +32,6 @@ function createSwitchItem(block, blockSwitch) {
 	blockName = block.children('.title').text();
 	content = block.children('.content').first().append(block.next('.colist'));
 	item = $('<div class="switch--item">' + blockName + '</div>');
-	item.on('click', '', content, function(e) {
-		$(this).addClass('selected');
-		$(this).siblings().removeClass('selected');
-		e.data.siblings('.content').addClass('hidden');
-		e.data.removeClass('hidden');
-	});
 	blockSwitch.append(item);
 	return {'item': item, 'content': content};
 }

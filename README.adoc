@@ -33,7 +33,7 @@ For example:
 [source,indent=0,role="secondary"]
 .Gradle
 ----
-compile 'com.example:some-library:1.2.3
+compile 'com.example:some-library:1.2.3'
 ----
 ....
 

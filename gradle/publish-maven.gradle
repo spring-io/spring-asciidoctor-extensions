@@ -34,4 +34,12 @@ publishing {
 			}
 		}
 	}
+	if (project.hasProperty("distributionRepository")) {
+		repositories {
+			maven {
+				url = "${distributionRepository}"
+				name = "distribution"
+			}
+		}
+	}
 }

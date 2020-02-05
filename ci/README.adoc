@@ -4,11 +4,10 @@ The pipeline can be deployed using the following command:
 
 [source]
 ----
-$ fly -t spring set-pipeline -p dependency-management-plugin -c ci/pipeline.yml -l ci/parameters.yml
+$ fly -t spring-asciidoctor-extensions set-pipeline -p spring-asciidoctor-extensions -c ci/pipeline.yml -l ci/parameters.yml
 ----
 
-NOTE: This assumes that you have credhub integration configured with the appropriate
-secrets.
+NOTE: This assumes that you have CredHub integration configured with the appropriate secrets.
 
 === Release
 
@@ -16,22 +15,22 @@ To release a milestone:
 
 [source]
 ----
-$ fly -t spring trigger-job -j dependency-management-plugin/stage-milestone
-$ fly -t spring trigger-job -j dependency-management-plugin/promote-milestone
+$ fly -t spring-asciidoctor-extensions trigger-job -j spring-asciidoctor-extensions/stage-milestone
+$ fly -t spring-asciidoctor-extensions trigger-job -j spring-asciidoctor-extensions/promote-milestone
 ----
 
 To release an RC:
 
 [source]
 ----
-$ fly -t spring trigger-job -j dependency-management-plugin/stage-rc
-$ fly -t spring trigger-job -j dependency-management-plugin/promote-rc
+$ fly -t spring-asciidoctor-extensions trigger-job -j spring-asciidoctor-extensions/stage-rc
+$ fly -t spring-asciidoctor-extensions trigger-job -j spring-asciidoctor-extensions/promote-rc
 ----
 
 To release a GA:
 
 [source]
 ----
-$ fly -t spring trigger-job -j dependency-management-plugin/stage-release
-$ fly -t spring trigger-job -j dependency-management-plugin/promote-release
+$ fly -t spring-asciidoctor-extensions trigger-job -j spring-asciidoctor-extensions/stage-release
+$ fly -t spring-asciidoctor-extensions trigger-job -j spring-asciidoctor-extensions/promote-release
 ----

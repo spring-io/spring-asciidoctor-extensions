@@ -5,7 +5,6 @@ source $(dirname $0)/common.sh
 
 buildName=$( cat artifactory-repo/build-info.json | jq -r '.buildInfo.name' )
 buildNumber=$( cat artifactory-repo/build-info.json | jq -r '.buildInfo.number' )
-packageName="io.spring.gradle.compatibility-test-plugin"
 version=$( cat artifactory-repo/build-info.json | jq -r '.buildInfo.modules[0].id' | sed 's/.*:.*:\(.*\)/\1/' )
 
 

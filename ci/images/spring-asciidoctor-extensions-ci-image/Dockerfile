@@ -1,4 +1,4 @@
-FROM ubuntu:bionic-20181018
+FROM ubuntu:bionic-20200112
 
 RUN apt-get update
 RUN apt-get install --no-install-recommends -y ca-certificates net-tools git curl jq

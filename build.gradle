@@ -23,11 +23,15 @@ subprojects {
 
 	dependencies {
 		checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:$springJavaFormatVersion"
-		testImplementation 'junit:junit:4.12'
+		testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
 		testImplementation 'org.assertj:assertj-core:3.11.1'
 	}
 
 	checkstyle {
 		toolVersion = '8.29'
+	}
+
+	test {
+		useJUnitPlatform()
 	}
 }

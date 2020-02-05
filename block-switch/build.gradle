@@ -13,6 +13,7 @@ dependencies {
 }
 
 compatibilityTest {
+	useJUnitPlatform()
 	dependency('AsciidoctorJ') { asciidoctorj ->
 		asciidoctorj.groupId = 'org.asciidoctor'
 		asciidoctorj.artifactId = 'asciidoctorj'

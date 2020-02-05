@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,24 +43,29 @@ public class CompatibilityTestPlugin implements Plugin<Project> {
 	@Override
 	public void apply(Project project) {
 		CompatibilityMatrix testMatrix = new CompatibilityMatrix();
-		project.getExtensions().add("compatibilityTest", new CompatibilityTestExtension(testMatrix));
-		project.afterEvaluate((evaluated) -> configure(project, testMatrix));
+		CompatibilityTestExtension extension = new CompatibilityTestExtension(testMatrix);
+		project.getExtensions().add("compatibilityTest", extension);
+		project.afterEvaluate((evaluated) -> configure(project, testMatrix, extension));
 	}
 
-	private void configure(Project project, CompatibilityMatrix testMatrix) {
+	private void configure(Project project, CompatibilityMatrix testMatrix, CompatibilityTestExtension extension) {
 		List<Set<DependencyVersion>> matrixEntries = testMatrix.getEntries();
 		if (matrixEntries.isEmpty()) {
 			return;
 		}
 		CartesianProduct.of(matrixEntries)
-				.forEach((dependencyVersions) -> configureTestTask(project, dependencyVersions));
+				.forEach((dependencyVersions) -> configureTestTask(project, dependencyVersions, extension));
 	}
 
-	private void configureTestTask(Project project, List<DependencyVersion> dependencyVersions) {
+	private void configureTestTask(Project project, List<DependencyVersion> dependencyVersions,
+			CompatibilityTestExtension extension) {
 		String identifier = dependencyVersions.stream().map(DependencyVersion::getIdentifier)
 				.collect(Collectors.joining("_"));
 		Test compatibilityTest = project.getTasks().create("compatibilityTest_" + identifier, Test.class,
 				(task) -> configureMatrixTestTask(project, task, identifier, dependencyVersions));
+		if (extension.isUseJUnitPlatform()) {
+			compatibilityTest.useJUnitPlatform();
+		}
 		project.getTasks().getByName(JavaBasePlugin.CHECK_TASK_NAME).dependsOn(compatibilityTest);
 	}
 

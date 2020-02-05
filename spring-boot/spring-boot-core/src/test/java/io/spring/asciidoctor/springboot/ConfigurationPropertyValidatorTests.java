@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.spring.asciidoctor.springboot.ValidationSettings.Format;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,19 +33,19 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Andy Wilkinson
  */
-public class ConfigurationPropertyValidatorTests {
+class ConfigurationPropertyValidatorTests {
 
 	private final TestLogger logger = new TestLogger();
 
 	private final ConfigurationPropertyValidator validator;
 
-	public ConfigurationPropertyValidatorTests() throws MalformedURLException {
+	ConfigurationPropertyValidatorTests() throws MalformedURLException {
 		this.validator = new ConfigurationPropertyValidator(this.logger, ConfigurationProperties.fromClasspath(
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() })));
 	}
 
 	@Test
-	public void whenPropertyCanBeFoundASingleDebugMessageIsLogged() {
+	void whenPropertyCanBeFoundASingleDebugMessageIsLogged() {
 		assertThat(this.validator.validateProperty("project.a.alpha", ValidationSettings.DEFAULT))
 				.isEqualTo("project.a.alpha");
 		assertThat(this.logger.warnMessages).isEmpty();
@@ -54,7 +54,7 @@ public class ConfigurationPropertyValidatorTests {
 	}
 
 	@Test
-	public void whenPropertyCannotBeFoundASingleWarnMessageIsLogged() {
+	void whenPropertyCannotBeFoundASingleWarnMessageIsLogged() {
 		assertThat(this.validator.validateProperty("project.a.delta", ValidationSettings.DEFAULT))
 				.isEqualTo("project.a.delta");
 		assertThat(this.logger.warnMessages).containsExactly("Configuration property 'project.a.delta' not found.");
@@ -62,21 +62,21 @@ public class ConfigurationPropertyValidatorTests {
 	}
 
 	@Test
-	public void whenFormatIsEnvironmentVariableValidationResultIsFormattedCorrectly() {
+	void whenFormatIsEnvironmentVariableValidationResultIsFormattedCorrectly() {
 		String result = this.validator.validateProperty("project.a.alpha",
 				new ValidationSettings(false, Format.ENVIRONMENT_VARIABLE));
 		assertThat(result).isEqualTo("PROJECT_A_ALPHA");
 	}
 
 	@Test
-	public void whenFormatIsEnvironmentVariableAndPropertyNameContainsDashesValidationResultIsFormattedCorrectly() {
+	void whenFormatIsEnvironmentVariableAndPropertyNameContainsDashesValidationResultIsFormattedCorrectly() {
 		String result = this.validator.validateProperty("project.a.bravo-property",
 				new ValidationSettings(false, Format.ENVIRONMENT_VARIABLE));
 		assertThat(result).isEqualTo("PROJECT_A_BRAVOPROPERTY");
 	}
 
 	@Test
-	public void whenAnUndeprecatedPropertyIsExpectedToBeDeprecatedAWarnMessageIsLogged() {
+	void whenAnUndeprecatedPropertyIsExpectedToBeDeprecatedAWarnMessageIsLogged() {
 		assertThat(this.validator.validateProperty("project.a.alpha", new ValidationSettings(true, Format.CANONICAL)))
 				.isEqualTo("project.a.alpha");
 		assertThat(this.logger.warnMessages)
@@ -85,7 +85,7 @@ public class ConfigurationPropertyValidatorTests {
 	}
 
 	@Test
-	public void whenADeprecatedPropertyIsNotExpectedToBeDeprecatedAWarnMessageIsLogged() {
+	void whenADeprecatedPropertyIsNotExpectedToBeDeprecatedAWarnMessageIsLogged() {
 		assertThat(this.validator.validateProperty("project.a.bravo-property",
 				new ValidationSettings(false, Format.CANONICAL))).isEqualTo("project.a.bravo-property");
 		assertThat(this.logger.warnMessages)

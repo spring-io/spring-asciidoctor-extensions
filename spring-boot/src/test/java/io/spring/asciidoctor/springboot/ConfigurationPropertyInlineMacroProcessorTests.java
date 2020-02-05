@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.asciidoctor.Options;
 import org.asciidoctor.SafeMode;
 import org.asciidoctor.log.LogRecord;
 import org.asciidoctor.log.Severity;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,32 +33,32 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Andy Wilkinson
  */
-public class ConfigurationPropertyInlineMacroProcessorTests {
+class ConfigurationPropertyInlineMacroProcessorTests {
 
 	private final Asciidoctor asciidoctor = Asciidoctor.Factory.create();
 
 	private final List<LogRecord> logRecords = new ArrayList<>();
 
-	public ConfigurationPropertyInlineMacroProcessorTests() {
+	ConfigurationPropertyInlineMacroProcessorTests() {
 		this.asciidoctor.registerLogHandler(this.logRecords::add);
 	}
 
 	@Test
-	public void whenPropertyThatExistsIsReferencedADebugMessageIsLogged() {
+	void whenPropertyThatExistsIsReferencedADebugMessageIsLogged() {
 		assertThat(convert("Using the property configprop:example.property.alpha[]"))
 				.contains("<code>example.property.alpha</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG);
 	}
 
 	@Test
-	public void whenPropertyIsReferencedAndEnvvarFormatIsSpecifiedTheOutputIsAllUpperCase() {
+	void whenPropertyIsReferencedAndEnvvarFormatIsSpecifiedTheOutputIsAllUpperCase() {
 		assertThat(convert("Using the property configprop:example.property.alpha[format=envvar]"))
 				.contains("<code>EXAMPLE_PROPERTY_ALPHA</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG);
 	}
 
 	@Test
-	public void whenPropertyThatDoesNotExistIsReferencedAWarningIsLogged() {
+	void whenPropertyThatDoesNotExistIsReferencedAWarningIsLogged() {
 		assertThat(convert("configprop:does.not.exist[]")).contains("<code>does.not.exist</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.WARN);
 		assertThat(this.logRecords).extracting(LogRecord::getMessage)
@@ -66,7 +66,7 @@ public class ConfigurationPropertyInlineMacroProcessorTests {
 	}
 
 	@Test
-	public void whenPropertyThatIsDeprecatedIsReferencedAsDeprecatedADebugMessageIsLogged() {
+	void whenPropertyThatIsDeprecatedIsReferencedAsDeprecatedADebugMessageIsLogged() {
 		assertThat(convert("configprop:example.property.bravo[deprecated]"))
 				.contains("<code>example.property.bravo</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG);
@@ -75,7 +75,7 @@ public class ConfigurationPropertyInlineMacroProcessorTests {
 	}
 
 	@Test
-	public void whenPropertyThatIsDeprecatedIsReferencedAWarningIsLogged() {
+	void whenPropertyThatIsDeprecatedIsReferencedAWarningIsLogged() {
 		assertThat(convert("configprop:example.property.bravo[]")).contains("<code>example.property.bravo</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.WARN);
 		assertThat(this.logRecords).extracting(LogRecord::getMessage)
@@ -83,7 +83,7 @@ public class ConfigurationPropertyInlineMacroProcessorTests {
 	}
 
 	@Test
-	public void whenPropertyThatIsNotDeprecatedIsReferencedAsDeprecatedAWarningIsLogged() {
+	void whenPropertyThatIsNotDeprecatedIsReferencedAsDeprecatedAWarningIsLogged() {
 		assertThat(convert("configprop:example.property.charlie[deprecated]"))
 				.contains("<code>example.property.charlie</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.WARN);

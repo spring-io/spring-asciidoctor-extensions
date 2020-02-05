@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package io.spring.gradle.compatibilitytest;
 
 import org.gradle.api.Project;
 import org.gradle.testfixtures.ProjectBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,10 +27,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Andy Wilkinson
  */
-public class CompatibilityTestPluginTests {
+class CompatibilityTestPluginTests {
 
 	@Test
-	public void extensionIsCreated() {
+	void extensionIsCreated() {
 		Project project = ProjectBuilder.builder().build();
 		project.getPluginManager().apply(CompatibilityTestPlugin.class);
 		assertThat(project.getExtensions().findByName("compatibilityTest"))

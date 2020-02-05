@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,24 +30,24 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Andy Wilkinson
  */
-public class CartesianProductTests {
+class CartesianProductTests {
 
 	@Test
-	public void oneSet() {
+	void oneSet() {
 		List<Set<String>> list = list(set("a", "b", "c"));
 		Set<List<String>> result = CartesianProduct.of(list);
 		assertThat(result).containsExactly(list("a"), list("b"), list("c"));
 	}
 
 	@Test
-	public void twoSets() {
+	void twoSets() {
 		Set<List<String>> result = CartesianProduct.of(list(set("a", "b"), set("1", "2", "3")));
 		assertThat(result).containsExactly(list("a", "1"), list("a", "2"), list("a", "3"), list("b", "1"),
 				list("b", "2"), list("b", "3"));
 	}
 
 	@Test
-	public void threeSets() {
+	void threeSets() {
 		Set<List<String>> result = CartesianProduct.of(list(set("a", "b"), set("1", "2"), set("red", "blue")));
 		assertThat(result).containsExactly(list("a", "1", "red"), list("a", "1", "blue"), list("a", "2", "red"),
 				list("a", "2", "blue"), list("b", "1", "red"), list("b", "1", "blue"), list("b", "2", "red"),
@@ -55,7 +55,7 @@ public class CartesianProductTests {
 	}
 
 	@Test
-	public void emptySet() {
+	void emptySet() {
 		Set<List<String>> result = CartesianProduct.of(list(set("a", "b"), set()));
 		assertThat(result.isEmpty());
 	}

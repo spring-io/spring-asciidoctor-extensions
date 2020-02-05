@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.asciidoctor.Options;
 import org.asciidoctor.SafeMode;
 import org.asciidoctor.log.LogRecord;
 import org.asciidoctor.log.Severity;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,18 +33,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Andy Wilkinson
  */
-public class ConfigurationPropertiesTreeprocessorTests {
+class ConfigurationPropertiesTreeprocessorTests {
 
 	private final Asciidoctor asciidoctor = Asciidoctor.Factory.create();
 
 	private final List<LogRecord> logRecords = new ArrayList<>();
 
-	public ConfigurationPropertiesTreeprocessorTests() {
+	ConfigurationPropertiesTreeprocessorTests() {
 		this.asciidoctor.registerLogHandler(this.logRecords::add);
 	}
 
 	@Test
-	public void whenPropertiesThatExistAreReferencedOnlyDebugRecordsAreLogged() {
+	void whenPropertiesThatExistAreReferencedOnlyDebugRecordsAreLogged() {
 		convert("[source,properties,configprops]\n" + //
 				"----\n" + //
 				"example.property.alpha=a\n" + //
@@ -56,7 +56,7 @@ public class ConfigurationPropertiesTreeprocessorTests {
 	}
 
 	@Test
-	public void whenAPropertyThatDoesNotExistIsReferencedAWarnRecordIsLogged() {
+	void whenAPropertyThatDoesNotExistIsReferencedAWarnRecordIsLogged() {
 		convert("[source,properties,configprops]\n" + //
 				"----\n" + //
 				"example.property.alpha=a\n" + //
@@ -69,7 +69,7 @@ public class ConfigurationPropertiesTreeprocessorTests {
 	}
 
 	@Test
-	public void aListingWithoutConfigpropsIsNotValidated() {
+	void aListingWithoutConfigpropsIsNotValidated() {
 		convert("[source,properties]\n" + //
 				"----\n" + //
 				"example.property.alpha=a\n" + //

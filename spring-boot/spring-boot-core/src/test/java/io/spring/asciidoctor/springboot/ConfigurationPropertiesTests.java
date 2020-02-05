@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,10 +30,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Andy Wilkinson
  */
-public class ConfigurationPropertiesTests {
+class ConfigurationPropertiesTests {
 
 	@Test
-	public void loadMetadataFromSingleSource() throws MalformedURLException {
+	void loadMetadataFromSingleSource() throws MalformedURLException {
 		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.size()).isEqualTo(3);
@@ -43,7 +43,7 @@ public class ConfigurationPropertiesTests {
 	}
 
 	@Test
-	public void loadMetadataFromMultipleSources() throws MalformedURLException {
+	void loadMetadataFromMultipleSources() throws MalformedURLException {
 		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL(),
 						new File("src/test/resources/metadata/project-b").toURI().toURL() }));
@@ -57,49 +57,49 @@ public class ConfigurationPropertiesTests {
 	}
 
 	@Test
-	public void whenPropertyIsNotDeprecatedInMetadataIsDeprecatedReturnsFalse() throws MalformedURLException {
+	void whenPropertyIsNotDeprecatedInMetadataIsDeprecatedReturnsFalse() throws MalformedURLException {
 		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.alpha").isDeprecated()).isFalse();
 	}
 
 	@Test
-	public void whenPropertyIsDeprecatedInMetadataIsDeprecatedReturnsTrue() throws MalformedURLException {
+	void whenPropertyIsDeprecatedInMetadataIsDeprecatedReturnsTrue() throws MalformedURLException {
 		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.bravo-property").isDeprecated()).isTrue();
 	}
 
 	@Test
-	public void whenPropertyIsAMapInMetadataIsMapReturnsTrue() throws MalformedURLException {
+	void whenPropertyIsAMapInMetadataIsMapReturnsTrue() throws MalformedURLException {
 		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.charlie").isMap()).isTrue();
 	}
 
 	@Test
-	public void whenPropertyIsNotAMapInMetadataIsMapReturnsFalse() throws MalformedURLException {
+	void whenPropertyIsNotAMapInMetadataIsMapReturnsFalse() throws MalformedURLException {
 		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.alpha").isMap()).isFalse();
 	}
 
 	@Test
-	public void whenPropertyNotInTheMetadataHasAMapAncestorItCanBeFound() throws MalformedURLException {
+	void whenPropertyNotInTheMetadataHasAMapAncestorItCanBeFound() throws MalformedURLException {
 		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.charlie.beneath-map")).isNotNull();
 	}
 
 	@Test
-	public void whenPropertyNotInTheMetadataHasANonMapAncestorItCannotBeFound() throws MalformedURLException {
+	void whenPropertyNotInTheMetadataHasANonMapAncestorItCannotBeFound() throws MalformedURLException {
 		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.alpha.beneath-non-map")).isNull();
 	}
 
 	@Test
-	public void whenPropertyInTheMetadataIsSearchedForWithArrayIndexSuffixItCanBeFound() throws MalformedURLException {
+	void whenPropertyInTheMetadataIsSearchedForWithArrayIndexSuffixItCanBeFound() throws MalformedURLException {
 		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		ConfigurationProperty property = configurationProperties.find("project.a.alpha[2]");
@@ -108,8 +108,7 @@ public class ConfigurationPropertiesTests {
 	}
 
 	@Test
-	public void whenPropertyNotInTheMetadataIsSearchedForWithArrayIndexSuffixItCannotBeFound()
-			throws MalformedURLException {
+	void whenPropertyNotInTheMetadataIsSearchedForWithArrayIndexSuffixItCannotBeFound() throws MalformedURLException {
 		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.delta[2]")).isNull();

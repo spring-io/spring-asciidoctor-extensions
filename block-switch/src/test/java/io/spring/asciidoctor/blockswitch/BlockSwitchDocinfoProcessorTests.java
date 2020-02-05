@@ -19,7 +19,7 @@ package io.spring.asciidoctor.blockswitch;
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Options;
 import org.asciidoctor.SafeMode;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,10 +28,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Andy Wilkinson
  */
-public class BlockSwitchDocinfoProcessorTests {
+class BlockSwitchDocinfoProcessorTests {
 
 	@Test
-	public void postProcessorIsApplied() {
+	void postProcessorIsApplied() {
 		Options options = new Options();
 		options.setHeaderFooter(true);
 		options.setSafe(SafeMode.SERVER);

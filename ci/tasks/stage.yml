@@ -7,6 +7,9 @@ outputs:
 - name: distribution-repository
 params:
   RELEASE_TYPE:
+  CI: true
+  GRADLE_ENTERPRISE_CACHE_USERNAME:
+  GRADLE_ENTERPRISE_CACHE_PASSWORD:
 caches:
 - path: maven
 - path: gradle

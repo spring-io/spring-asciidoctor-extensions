@@ -7,6 +7,12 @@ outputs:
 caches:
 - path: maven
 - path: gradle
+params:
+  BRANCH:
+  CI: true
+  GRADLE_ENTERPRISE_ACCESS_KEY:
+  GRADLE_ENTERPRISE_CACHE_USERNAME:
+  GRADLE_ENTERPRISE_CACHE_PASSWORD:
 run:
   path: bash
   args:

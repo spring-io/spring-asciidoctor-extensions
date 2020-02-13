@@ -49,7 +49,7 @@ class ConfigurationPropertiesTreeprocessor extends Treeprocessor {
 		if (hasConfigpropsAttribute(structuralNode)) {
 			this.validator.validateProperties(structuralNode.getContent());
 		}
-		List<StructuralNode> children = structuralNode.getBlocks();
+		List<StructuralNode> children = getChildren(structuralNode);
 		if (children != null) {
 			for (StructuralNode child : children) {
 				process(child);
@@ -68,6 +68,16 @@ class ConfigurationPropertiesTreeprocessor extends Treeprocessor {
 			// Work around RubyAttributesMapDecorator decorating a null RubyHash
 		}
 		return false;
+	}
+
+	private List<StructuralNode> getChildren(StructuralNode structuralNode) {
+		try {
+			return structuralNode.getBlocks();
+		}
+		catch (Exception ex) {
+			// Work around undefined method `blocks'
+		}
+		return null;
 	}
 
 }

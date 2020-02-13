@@ -17,6 +17,7 @@
 package io.spring.asciidoctor.springboot.aj2x;
 
 import java.util.List;
+import java.util.Map;
 
 import io.spring.asciidoctor.springboot.ConfigurationPropertyValidator;
 import io.spring.asciidoctor.springboot.Logger;
@@ -45,7 +46,7 @@ class ConfigurationPropertiesTreeprocessor extends Treeprocessor {
 	}
 
 	private void process(StructuralNode structuralNode) {
-		if (structuralNode.getAttributes().containsValue("configprops")) {
+		if (hasConfigpropsAttribute(structuralNode)) {
 			this.validator.validateProperties(structuralNode.getContent());
 		}
 		List<StructuralNode> children = structuralNode.getBlocks();
@@ -54,6 +55,19 @@ class ConfigurationPropertiesTreeprocessor extends Treeprocessor {
 				process(child);
 			}
 		}
+	}
+
+	private boolean hasConfigpropsAttribute(StructuralNode structuralNode) {
+		Map<String, Object> attributes = structuralNode.getAttributes();
+		try {
+			if (attributes.containsValue("configprops")) {
+				return true;
+			}
+		}
+		catch (NullPointerException ex) {
+			// Work around RubyAttributesMapDecorator decorating a null RubyHash
+		}
+		return false;
 	}
 
 }

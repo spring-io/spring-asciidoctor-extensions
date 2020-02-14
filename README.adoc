@@ -102,3 +102,10 @@ Three properties will be validated in the preceding example:
 A debug message is output for every property in the listing that exists.
 A warning message is output for every property in the listing that does not exist.
 Properties that are bound to a map or that use `[]` notation to configure an item in a list are supported.
+
+== Adding the extensions to your project
+
+You add the spring-asciidoctor-extensions to your project in the same way as any other. Consult the relevant documentation for details:
+
+* [Gradle 3.x](https://asciidoctor.github.io/asciidoctor-gradle-plugin/development-3.x/user-guide/#_as_external_library)
+* [Maven](https://asciidoctor.org/docs/asciidoctor-maven-plugin/#configuration)

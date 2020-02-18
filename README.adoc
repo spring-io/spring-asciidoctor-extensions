@@ -45,8 +45,8 @@ compile 'com.example:some-library:1.2.3'
 
 Extension for writing Spring Boot-related documentation, providing the following functionality:
 
-- A macro for verifying that individual configuration properties exist.
-- Opt-in support for verifying the keys in a properties listing exist as configuration properties.
+* A macro for verifying that individual configuration properties exist.
+* Opt-in support for verifying the keys in a properties listing exist as configuration properties.
 
 ==== `configprop` macro
 
@@ -95,9 +95,9 @@ example.property.charlie=c
 
 Three properties will be validated in the preceding example:
 
-- `example.property.alpha`
-- `example.property.bravo`
-- `example.property.charlie`
+* `example.property.alpha`
+* `example.property.bravo`
+* `example.property.charlie`
 
 A debug message is output for every property in the listing that exists.
 A warning message is output for every property in the listing that does not exist.
@@ -105,7 +105,12 @@ Properties that are bound to a map or that use `[]` notation to configure an ite
 
 == Adding the extensions to your project
 
-You add the spring-asciidoctor-extensions to your project in the same way as any other. Consult the relevant documentation for details:
+The extensions can be added to your project using the standard mechanism for your build system.
+Please consult the relevant documentation for details:
 
-* link:https://asciidoctor.github.io/asciidoctor-gradle-plugin/development-3.x/user-guide/#_as_external_library[Gradle 3.x]
-* link:https://asciidoctor.org/docs/asciidoctor-maven-plugin/#configuration[Maven]
+* Asciidoctor Gradle Plugin
+  ** https://asciidoctor.github.io/asciidoctor-gradle-plugin/development-3.x/user-guide/#_as_external_library[3.x]
+  ** https://asciidoctor.github.io/asciidoctor-gradle-plugin/development-2.0/user-guide/#_as_external_library[2.x]
+  ** https://github.com/asciidoctor/asciidoctor-gradle-plugin/tree/maintenance-1.6#as-external-library[1.6]
+  ** https://github.com/asciidoctor/asciidoctor-gradle-plugin/tree/maintenance-1.5#as-external-library[1.5]
+* https://asciidoctor.org/docs/asciidoctor-maven-plugin/#configuration[Asciidoctor Maven Plugin]

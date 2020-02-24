@@ -1,0 +1,42 @@
+:doctype: book
+:docinfo: shared
+:toc: left
+
+[role="toggle-group-names"]
+Java-XML,Maven-Gradle
+
+= Document Title
+
+An introduction or similar content
+
+== First First-level Heading
+
+Leader paragraph for the section.
+
+[role="group-name:java-xml group-value:xml"]
+=== Second-level Heading - XML
+
+[role="group-name:java-xml group-value:xml"]
+Content that should appear only when the XML toggle is active.
+
+[role="group-name:java-xml group-value:java"]
+=== Second-level Heading - Java
+
+[role="group-name:java-xml group-value:java"]
+Content that should appear only when the Java toggle is active.
+
+== Second First-level Heading
+
+Leader paragraph for the section.
+
+[role="group-name:maven-gradle group-value:maven"]
+=== Second-level Heading - Maven
+
+[role="group-name:maven-gradle group-value:maven"]
+Content that should appear only when the Maven toggle is active.
+
+[role="group-name:maven-gradle group-value:gradle"]
+=== Second-level Heading - Gradle
+
+[role="group-name:maven-gradle group-value:gradle"]
+Content that should appear only when the Gradle toggle is active.

@@ -1,0 +1,3 @@
+.toggle-group-names {display: none;}
+.toggle-container {display: inline; padding: 5px;}
+.pressed {color:white; background-color: black; outline: none;}

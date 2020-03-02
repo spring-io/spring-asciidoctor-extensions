@@ -9,7 +9,13 @@ apply from: "$rootDir/gradle/publish-maven.gradle"
 dependencies {
 	runtimeOnly project(":block-switch:block-switch-aj1x")
 	runtimeOnly project(":block-switch:block-switch-aj2x")
+	
 	testImplementation "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
+	testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:3.141.59"
+	testImplementation "org.seleniumhq.selenium:selenium-remote-driver:3.141.59"
+	testImplementation "org.slf4j:slf4j-simple:1.7.30"
+	testImplementation "org.testcontainers:junit-jupiter:1.12.5"
+	testImplementation "org.testcontainers:selenium:1.12.5"
 }
 
 compatibilityTest {

@@ -104,6 +104,21 @@ public class BlockSwitchIntegrationTests {
 				.hasDisplayedContentContaining("Bravo 2");
 	}
 
+	@Test
+	void givenMultipleSwitchesWithDifferentOptionsWhenUnselectedItemIsClickedThenItBecomesSelected()
+			throws IOException {
+		RemoteWebDriver driver = load("multipleSwitchesDifferentOptions.adoc");
+		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
+		assertThat(listings).hasSize(2);
+		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Charlie").hasUnselectedItems("Delta", "Echo")
+				.hasDisplayedContentContaining("Charlie 1");
+		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha").hasUnselectedItems("Bravo")
+				.hasDisplayedContentContaining("Alpha 1").uponClicking("Bravo").hasSelectedItem("Bravo")
+				.hasUnselectedItems("Alpha").hasDisplayedContentContaining("Bravo 1");
+		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Charlie").hasUnselectedItems("Delta", "Echo")
+				.hasDisplayedContentContaining("Charlie 1");
+	}
+
 	private RemoteWebDriver load(String adocFile) throws IOException {
 		Options options = new Options();
 		options.setHeaderFooter(true);

@@ -38,7 +38,7 @@ function createSwitchItem(block, blockSwitch) {
 
 function globalSwitch() {
 	$('.switch--item').each(function() {
-		blockId = blockIdForSwitchItem($(this));
+		var blockId = blockIdForSwitchItem($(this));
 		$(this).off('click');
 		$(this).on('click', function() {
 			selectedText = $(this).text()

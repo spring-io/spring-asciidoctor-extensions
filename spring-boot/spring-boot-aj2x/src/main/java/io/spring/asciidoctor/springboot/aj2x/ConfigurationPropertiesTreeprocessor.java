@@ -17,10 +17,10 @@
 package io.spring.asciidoctor.springboot.aj2x;
 
 import java.util.List;
-import java.util.Map;
 
 import io.spring.asciidoctor.springboot.ConfigurationPropertyValidator;
 import io.spring.asciidoctor.springboot.Logger;
+import org.asciidoctor.ast.DescriptionListEntry;
 import org.asciidoctor.ast.Document;
 import org.asciidoctor.ast.StructuralNode;
 import org.asciidoctor.extension.Treeprocessor;
@@ -58,26 +58,17 @@ class ConfigurationPropertiesTreeprocessor extends Treeprocessor {
 	}
 
 	private boolean hasConfigpropsAttribute(StructuralNode structuralNode) {
-		Map<String, Object> attributes = structuralNode.getAttributes();
-		try {
-			if (attributes.containsValue("configprops")) {
-				return true;
-			}
+		if (structuralNode instanceof DescriptionListEntry) {
+			return false;
 		}
-		catch (NullPointerException ex) {
-			// Work around RubyAttributesMapDecorator decorating a null RubyHash
-		}
-		return false;
+		return structuralNode.getAttributes().containsValue("configprops");
 	}
 
 	private List<StructuralNode> getChildren(StructuralNode structuralNode) {
-		try {
-			return structuralNode.getBlocks();
+		if (structuralNode instanceof DescriptionListEntry) {
+			return ((DescriptionListEntry) structuralNode).getDescription().getBlocks();
 		}
-		catch (Exception ex) {
-			// Work around undefined method `blocks'
-		}
-		return null;
+		return structuralNode.getBlocks();
 	}
 
 }

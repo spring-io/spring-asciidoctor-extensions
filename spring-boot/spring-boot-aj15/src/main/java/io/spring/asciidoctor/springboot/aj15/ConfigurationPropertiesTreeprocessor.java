@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,12 @@ import io.spring.asciidoctor.springboot.ConfigurationPropertyValidator;
 import io.spring.asciidoctor.springboot.Logger;
 import org.asciidoctor.ast.AbstractBlock;
 import org.asciidoctor.ast.Document;
+import org.asciidoctor.ast.ListNode;
 import org.asciidoctor.extension.Treeprocessor;
 
 /**
- * {@link Treeprocessor} that validates configuration properties found in blocks * with
- * the {@code configprops} attribute.
+ * {@link Treeprocessor} that validates configuration properties found in blocks with the
+ * {@code configprops} attribute.
  *
  * @author Andy Wilkinson
  */
@@ -48,12 +49,19 @@ class ConfigurationPropertiesTreeprocessor extends Treeprocessor {
 		if (block.getAttributes().containsValue("configprops")) {
 			this.validator.validateProperties(block.getContent());
 		}
-		List<AbstractBlock> children = block.getBlocks();
+		List<AbstractBlock> children = getChildren(block);
 		if (children != null) {
 			for (AbstractBlock child : children) {
 				process(child);
 			}
 		}
+	}
+
+	private List<AbstractBlock> getChildren(AbstractBlock block) {
+		if (block instanceof ListNode) {
+			return null;
+		}
+		return block.getBlocks();
 	}
 
 }

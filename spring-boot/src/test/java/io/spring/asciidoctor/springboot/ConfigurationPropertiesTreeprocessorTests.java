@@ -79,6 +79,16 @@ class ConfigurationPropertiesTreeprocessorTests {
 		assertThat(this.logRecords).isEmpty();
 	}
 
+	@Test
+	void whenSourceContainsADescriptionListTreeprocessingDoesNotFail() {
+		convert("CPU:: The brain of the computer.\n" + //
+				"Hard drive:: Permanent storage for operating system and/or user files.\n" + //
+				"RAM:: Temporarily stores information the CPU uses during operation.\n" + //
+				"Keyboard:: Used to enter text or control items on the screen.\n" + //
+				"Mouse:: Used to point to and select items on your computer screen.\n" + //
+				"Monitor:: Displays information in visual form using text and graphics.\n");
+	}
+
 	private String convert(String source) {
 		Options options = new Options();
 		options.setSafe(SafeMode.SERVER);

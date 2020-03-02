@@ -54,7 +54,8 @@ jobs:
     trigger: true
   - put: spring-asciidoctor-extensions-ci-image
     params:
-      build: ci-images-git-repo/ci/images/spring-asciidoctor-extensions-ci-image
+      build: ci-images-git-repo/ci/images
+      dockerfile: ci-images-git-repo/ci/images/spring-asciidoctor-extensions-ci-image/Dockerfile
 - name: build
   serial: true
   public: true

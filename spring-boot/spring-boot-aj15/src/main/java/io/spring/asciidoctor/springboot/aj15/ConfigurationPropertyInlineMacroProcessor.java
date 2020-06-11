@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package io.spring.asciidoctor.springboot.aj15;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.spring.asciidoctor.springboot.AttributesNormalizer;
 import io.spring.asciidoctor.springboot.ConfigurationPropertyValidator;
 import io.spring.asciidoctor.springboot.Logger;
 import io.spring.asciidoctor.springboot.ValidationSettings;
@@ -44,13 +45,14 @@ class ConfigurationPropertyInlineMacroProcessor extends InlineMacroProcessor {
 	public Object process(AbstractBlock parent, String propertyName, Map<String, Object> attributes) {
 		Map<String, Object> options = new HashMap<>();
 		options.put("type", ":monospaced");
-		String validated = this.validator.validateProperty(propertyName, getSettings(attributes));
+		String validated = this.validator.validateProperty(propertyName,
+				getSettings(AttributesNormalizer.normalize(attributes)));
 		return createInline(parent, "quoted", validated, attributes, options);
 	}
 
 	private ValidationSettings getSettings(Map<String, Object> attributes) {
 		boolean deprecated = attributes.containsValue("deprecated");
-		Format format = attributes.containsValue("format=envvar") ? Format.ENVIRONMENT_VARIABLE : null;
+		Format format = "envvar".equals(attributes.get("format")) ? Format.ENVIRONMENT_VARIABLE : null;
 		return new ValidationSettings(deprecated, format);
 	}
 

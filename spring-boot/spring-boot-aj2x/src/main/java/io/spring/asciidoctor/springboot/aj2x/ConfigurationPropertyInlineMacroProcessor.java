@@ -19,11 +19,11 @@ package io.spring.asciidoctor.springboot.aj2x;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.spring.asciidoctor.springboot.AttributesNormalizer;
 import io.spring.asciidoctor.springboot.ConfigurationPropertyValidator;
 import io.spring.asciidoctor.springboot.Logger;
 import io.spring.asciidoctor.springboot.ValidationSettings;
 import io.spring.asciidoctor.springboot.ValidationSettings.Format;
-import org.asciidoctor.ast.ContentModel;
 import org.asciidoctor.ast.ContentNode;
 import org.asciidoctor.extension.InlineMacroProcessor;
 
@@ -32,7 +32,6 @@ import org.asciidoctor.extension.InlineMacroProcessor;
  *
  * @author Andy Wilkinson
  */
-@ContentModel(ContentModel.ATTRIBUTES)
 class ConfigurationPropertyInlineMacroProcessor extends InlineMacroProcessor {
 
 	private final ConfigurationPropertyValidator validator;
@@ -46,7 +45,8 @@ class ConfigurationPropertyInlineMacroProcessor extends InlineMacroProcessor {
 	public Object process(ContentNode parent, String propertyName, Map<String, Object> attributes) {
 		Map<String, Object> options = new HashMap<>();
 		options.put("type", ":monospaced");
-		String validated = this.validator.validateProperty(propertyName, getSettings(attributes));
+		String validated = this.validator.validateProperty(propertyName,
+				getSettings(AttributesNormalizer.normalize(attributes)));
 		return createPhraseNode(parent, "quoted", validated, attributes, options);
 	}
 

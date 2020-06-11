@@ -58,6 +58,22 @@ class ConfigurationPropertyInlineMacroProcessorTests {
 	}
 
 	@Test
+	void whenConversionIsPerformedMultipleTimesThenFormatAttributeIsHonoured() {
+		assertThat(convert("Using the property configprop:example.property.alpha[format=envvar]"))
+				.contains("<code>EXAMPLE_PROPERTY_ALPHA</code>");
+		assertThat(convert("Using the property configprop:example.property.alpha[format=envvar]"))
+				.contains("<code>EXAMPLE_PROPERTY_ALPHA</code>");
+		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG, Severity.DEBUG);
+	}
+
+	@Test
+	void whenDeprecatedPropertyIsReferencedAsDeprecatedAndEnvvarFormatIsSpecifiedTheOutputIsAllUpperCase() {
+		assertThat(convert("Using the property configprop:example.property.bravo[deprecated,format=envvar]"))
+				.contains("<code>EXAMPLE_PROPERTY_BRAVO</code>");
+		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG);
+	}
+
+	@Test
 	void whenPropertyThatDoesNotExistIsReferencedAWarningIsLogged() {
 		assertThat(convert("configprop:does.not.exist[]")).contains("<code>does.not.exist</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.WARN);

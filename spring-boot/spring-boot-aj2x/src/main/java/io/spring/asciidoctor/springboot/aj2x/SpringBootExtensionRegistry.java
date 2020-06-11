@@ -33,6 +33,7 @@ public class SpringBootExtensionRegistry implements ExtensionRegistry {
 
 	@Override
 	public void register(Asciidoctor asciidoctor) {
+
 		JavaExtensionRegistry registry = asciidoctor.javaExtensionRegistry();
 		Logger logger = new LogHandlerLoggerAdapter((LogHandler) asciidoctor);
 		registry.inlineMacro(new ConfigurationPropertyInlineMacroProcessor(logger));

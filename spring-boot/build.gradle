@@ -19,7 +19,13 @@ compatibilityTest {
 	dependency('AsciidoctorJ') { asciidoctorj ->
 		asciidoctorj.groupId = 'org.asciidoctor'
 		asciidoctorj.artifactId = 'asciidoctorj'
-		asciidoctorj.versions = [ asciidoctorj16Version, asciidoctorj20Version, asciidoctorj21Version, asciidoctorj22Version ]
+		asciidoctorj.versions = [
+			asciidoctorj16Version,
+			asciidoctorj20Version,
+			asciidoctorj21Version,
+			asciidoctorj22Version,
+			asciidoctorj23Version
+		]
 	}
 }
 

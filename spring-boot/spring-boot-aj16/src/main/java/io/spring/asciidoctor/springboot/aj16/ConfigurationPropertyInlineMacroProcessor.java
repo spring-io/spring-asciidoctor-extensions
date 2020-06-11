@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import io.spring.asciidoctor.springboot.ConfigurationPropertyValidator;
 import io.spring.asciidoctor.springboot.Logger;
 import io.spring.asciidoctor.springboot.ValidationSettings;
 import io.spring.asciidoctor.springboot.ValidationSettings.Format;
+import org.asciidoctor.ast.ContentModel;
 import org.asciidoctor.ast.ContentNode;
 import org.asciidoctor.extension.InlineMacroProcessor;
 
@@ -31,6 +32,7 @@ import org.asciidoctor.extension.InlineMacroProcessor;
  *
  * @author Andy Wilkinson
  */
+@ContentModel(ContentModel.ATTRIBUTES)
 class ConfigurationPropertyInlineMacroProcessor extends InlineMacroProcessor {
 
 	private final ConfigurationPropertyValidator validator;

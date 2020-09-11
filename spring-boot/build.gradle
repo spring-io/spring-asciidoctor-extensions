@@ -24,7 +24,8 @@ compatibilityTest {
 			asciidoctorj20Version,
 			asciidoctorj21Version,
 			asciidoctorj22Version,
-			asciidoctorj23Version
+			asciidoctorj23Version,
+			asciidoctorj24Version
 		]
 	}
 }

@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
 
 import org.yaml.snakeyaml.LoaderOptions;
@@ -42,12 +43,9 @@ public class YamlToPropertiesConverter {
 
 	private static final Pattern VALID_COMPONENT_NAME = Pattern.compile("^[a-z0-9][a-z0-9-\\.]*$");
 
-	List<String> convert(List<String> source) {
+	List<String> convertLines(List<String> source) {
 		String content = getContent(source);
-		List<Document> documents = new ArrayList<>();
-		for (Object loaded : getYaml().loadAll(content)) {
-			documents.add(new Document(asMap(loaded)));
-		}
+		List<Document> documents = convertContent(content);
 		List<String> result = new ArrayList<>();
 		for (int i = 0; i < documents.size(); i++) {
 			result.addAll(documents.get(i).getLines());
@@ -56,6 +54,14 @@ public class YamlToPropertiesConverter {
 			}
 		}
 		return result;
+	}
+
+	List<Document> convertContent(String content) {
+		List<Document> documents = new ArrayList<>();
+		for (Object loaded : getYaml().loadAll(content)) {
+			documents.add(new Document(asMap(loaded)));
+		}
+		return documents;
 	}
 
 	private String getContent(List<String> source) {
@@ -83,7 +89,7 @@ public class YamlToPropertiesConverter {
 		return result;
 	}
 
-	private static class Document extends Properties {
+	static class Document extends Properties {
 
 		private final Map<Object, Object> entries = new LinkedHashMap<>();
 
@@ -137,6 +143,11 @@ public class YamlToPropertiesConverter {
 		public synchronized Object get(Object key) {
 			Object value = this.entries.get(key);
 			return (value != null) ? String.valueOf(value) : null;
+		}
+
+		@Override
+		public synchronized void forEach(BiConsumer<? super Object, ? super Object> action) {
+			this.entries.forEach(action);
 		}
 
 		private List<String> getLines() {

@@ -46,7 +46,8 @@ class ConfigurationPropertiesTreeprocessor extends Treeprocessor {
 
 	private void process(StructuralNode structuralNode) {
 		if (structuralNode.getAttributes().containsValue("configprops")) {
-			this.validator.validateProperties(structuralNode.getContent());
+			this.validator.validateProperties(structuralNode.getContent(),
+					(String) structuralNode.getAttribute("language"));
 		}
 		List<StructuralNode> children = structuralNode.getBlocks();
 		if (children != null) {

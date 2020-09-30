@@ -45,7 +45,7 @@ public class ConfigBlocksGenerator {
 		if (!"yaml".equalsIgnoreCase(in.getLanguage())) {
 			throw new IllegalArgumentException("Block generation is only supported for YAML inputs");
 		}
-		out.accept(createConfigData(in, "properties", this.yamlToProperties.convert(in.getContent())));
+		out.accept(createConfigData(in, "properties", this.yamlToProperties.convertLines(in.getContent())));
 		out.accept(createConfigData(in, "yaml", in.getContent()));
 	}
 

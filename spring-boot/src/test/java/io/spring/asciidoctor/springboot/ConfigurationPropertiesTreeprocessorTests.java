@@ -69,6 +69,23 @@ class ConfigurationPropertiesTreeprocessorTests {
 	}
 
 	@Test
+	void whenAYamlPropertyThatDoesNotExistIsReferencedAWarnRecordIsLogged() {
+		convert("[source,yaml,configprops]\n" + //
+				"----\n" + //
+				"example:\n" + //
+				"  property:\n" + //
+				"    alpha: a\n" + //
+				"    charlie: c\n" + //
+				"does:\n" + //
+				"  not:\n" + //
+				"    exist: b\n" + //
+				"----");
+		assertThat(this.logRecords).hasSize(3);
+		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactlyInAnyOrder(Severity.DEBUG,
+				Severity.DEBUG, Severity.WARN);
+	}
+
+	@Test
 	void aListingWithoutConfigpropsIsNotValidated() {
 		convert("[source,properties]\n" + //
 				"----\n" + //

@@ -18,7 +18,10 @@ package io.spring.asciidoctor.springboot;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.List;
 import java.util.Properties;
+
+import io.spring.asciidoctor.springboot.YamlToPropertiesConverter.Document;
 
 /**
  * A validator for references to Spring Boot configuration properties. Does not refer to
@@ -74,13 +77,12 @@ public class ConfigurationPropertyValidator {
 				outcome.formatMessage(propertyName), outcome);
 	}
 
-	public void validateProperties(Object content) {
+	public void validateProperties(Object content, String language) {
 		if (!(content instanceof String)) {
 			return;
 		}
 		try {
-			Properties properties = new Properties();
-			properties.load(new StringReader((String) content));
+			Properties properties = loadProperties((String) content, language);
 			for (String propertyName : properties.stringPropertyNames()) {
 				Result result = doValidateProperty(propertyName, ValidationSettings.DEFAULT);
 				if (result.getOutcome() != Outcome.NOT_FOUND) {
@@ -94,6 +96,20 @@ public class ConfigurationPropertyValidator {
 		catch (IOException ex) {
 			this.logger.warn("Failed to load properties: " + ex.getMessage());
 		}
+	}
+
+	private Properties loadProperties(String content, String language) throws IOException {
+		Properties properties = new Properties();
+		if ("yaml".equalsIgnoreCase(language)) {
+			List<Document> documents = new YamlToPropertiesConverter().convertContent(content);
+			for (Document document : documents) {
+				document.forEach(properties::put);
+			}
+		}
+		else {
+			properties.load(new StringReader(content));
+		}
+		return properties;
 	}
 
 	private enum Outcome {

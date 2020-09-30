@@ -43,7 +43,7 @@ class YamlToPropertiesConverterTests {
 		String name = yamlFile.getName().split("\\.")[0];
 		File propertiesFile = new File(yamlFile.getParentFile(), name + ".properties");
 		List<String> source = readLines(yamlFile);
-		List<String> converted = this.converter.convert(source);
+		List<String> converted = this.converter.convertLines(source);
 		List<String> expected = readLines(propertiesFile);
 		assertThat(converted).as(name).isEqualTo(expected);
 	}

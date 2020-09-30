@@ -47,7 +47,7 @@ class ConfigurationPropertiesTreeprocessor extends Treeprocessor {
 
 	private void process(AbstractBlock block) {
 		if (block.getAttributes().containsValue("configprops")) {
-			this.validator.validateProperties(block.getContent());
+			this.validator.validateProperties(block.getContent(), (String) block.getAttr("language"));
 		}
 		List<AbstractBlock> children = getChildren(block);
 		if (children != null) {

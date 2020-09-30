@@ -48,9 +48,9 @@ Extension for writing Spring Boot-related documentation, providing the following
 * A macro for verifying that individual configuration properties exist.
 * Opt-in support for verifying the keys in a properties listing exist as configuration properties.
 
-==== `configprop` macro
+==== Inline property validation
 
-`configprop` macro can be used to reference a configuration property in line as shown in the following example:
+The `configprop` macro can be used to reference a configuration property in line as shown in the following example:
 
 [source,asciidoctor]
 ----
@@ -102,6 +102,42 @@ Three properties will be validated in the preceding example:
 A debug message is output for every property in the listing that exists.
 A warning message is output for every property in the listing that does not exist.
 Properties that are bound to a map or that use `[]` notation to configure an item in a list are supported.
+
+
+==== Automatically generating different config blocks
+
+The extension can generate different config source format blocks from a single listing.
+Currently you can generate a `.properties` block given a `.yaml` source.
+The generated listings use the "Block Switch" extension to give the user a tabbed view.
+
+For example, given the source:
+
+[source,asciidoctor]
+....
+[source,yaml,configblocks]
+----
+example:
+  property:
+    alpha: a
+----
+....
+
+The user will be provided with a "block switch" containing:
+
+[source,properties]
+----
+example.property.alpha: a
+----
+
+and
+
+[source,yaml]
+----
+example:
+  property:
+    alpha: a
+----
+
 
 == Adding the extensions to your project
 

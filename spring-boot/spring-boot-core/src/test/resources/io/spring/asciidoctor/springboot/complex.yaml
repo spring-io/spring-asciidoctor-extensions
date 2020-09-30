@@ -1,0 +1,10 @@
+debug: true
+server:
+  port: 8080
+spring:
+  logging:
+    level:
+      org.springframework: trace
+      org.apache: debug
+  application:
+    name: "my application"

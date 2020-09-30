@@ -20,8 +20,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.List;
 
 import io.spring.asciidoctor.springboot.ValidationSettings.Format;
 import org.junit.jupiter.api.Test;
@@ -48,8 +46,8 @@ class ConfigurationPropertyValidatorTests {
 	void whenPropertyCanBeFoundASingleDebugMessageIsLogged() {
 		assertThat(this.validator.validateProperty("project.a.alpha", ValidationSettings.DEFAULT))
 				.isEqualTo("project.a.alpha");
-		assertThat(this.logger.warnMessages).isEmpty();
-		assertThat(this.logger.debugMessages)
+		assertThat(this.logger).warnMessages().isEmpty();
+		assertThat(this.logger).debugMessages()
 				.containsExactly("Configuration property 'project.a.alpha' successfully validated.");
 	}
 
@@ -57,8 +55,8 @@ class ConfigurationPropertyValidatorTests {
 	void whenPropertyCannotBeFoundASingleWarnMessageIsLogged() {
 		assertThat(this.validator.validateProperty("project.a.delta", ValidationSettings.DEFAULT))
 				.isEqualTo("project.a.delta");
-		assertThat(this.logger.warnMessages).containsExactly("Configuration property 'project.a.delta' not found.");
-		assertThat(this.logger.debugMessages).isEmpty();
+		assertThat(this.logger).warnMessages().containsExactly("Configuration property 'project.a.delta' not found.");
+		assertThat(this.logger).debugMessages().isEmpty();
 	}
 
 	@Test
@@ -79,36 +77,18 @@ class ConfigurationPropertyValidatorTests {
 	void whenAnUndeprecatedPropertyIsExpectedToBeDeprecatedAWarnMessageIsLogged() {
 		assertThat(this.validator.validateProperty("project.a.alpha", new ValidationSettings(true, Format.CANONICAL)))
 				.isEqualTo("project.a.alpha");
-		assertThat(this.logger.warnMessages)
+		assertThat(this.logger).warnMessages()
 				.containsExactly("Configuration property 'project.a.alpha' is not deprecated.");
-		assertThat(this.logger.debugMessages).isEmpty();
+		assertThat(this.logger).debugMessages().isEmpty();
 	}
 
 	@Test
 	void whenADeprecatedPropertyIsNotExpectedToBeDeprecatedAWarnMessageIsLogged() {
 		assertThat(this.validator.validateProperty("project.a.bravo-property",
 				new ValidationSettings(false, Format.CANONICAL))).isEqualTo("project.a.bravo-property");
-		assertThat(this.logger.warnMessages)
+		assertThat(this.logger).warnMessages()
 				.containsExactly("Configuration property 'project.a.bravo-property' is deprecated.");
-		assertThat(this.logger.debugMessages).isEmpty();
-	}
-
-	private static final class TestLogger implements Logger {
-
-		private final List<String> warnMessages = new ArrayList<>();
-
-		private final List<String> debugMessages = new ArrayList<>();
-
-		@Override
-		public void warn(String message) {
-			this.warnMessages.add(message);
-		}
-
-		@Override
-		public void debug(String message) {
-			this.debugMessages.add(message);
-		}
-
+		assertThat(this.logger).debugMessages().isEmpty();
 	}
 
 }

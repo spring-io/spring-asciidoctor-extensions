@@ -40,6 +40,7 @@ public class SpringBootExtensionRegistry implements ExtensionRegistry {
 		Logger logger = new LogHandlerLoggerAdapter((LogHandler) asciidoctor);
 		registry.inlineMacro(new ConfigurationPropertyInlineMacroProcessor(logger));
 		registry.treeprocessor(new ConfigurationPropertiesTreeprocessor(logger));
+		registry.treeprocessor(new ConfigurationBlocksTreeprocessor(logger));
 	}
 
 	private boolean asciidoctorJ16() {

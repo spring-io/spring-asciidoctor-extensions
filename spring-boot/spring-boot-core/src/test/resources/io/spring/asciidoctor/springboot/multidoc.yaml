@@ -1,0 +1,5 @@
+spring.config.import: foo.properties
+spring.config.activate.on-profile: foo
+---
+spring.config.import: bar.properties
+spring.config.activate.on-profile: bar

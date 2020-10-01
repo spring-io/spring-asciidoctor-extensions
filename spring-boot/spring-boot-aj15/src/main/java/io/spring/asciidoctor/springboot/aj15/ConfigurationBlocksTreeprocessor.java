@@ -42,7 +42,7 @@ public class ConfigurationBlocksTreeprocessor extends Treeprocessor {
 	private final ConfigBlocksGenerator generator;
 
 	ConfigurationBlocksTreeprocessor(Logger logger) {
-		this.generator = new ConfigBlocksGenerator(logger);
+		this.generator = new ConfigBlocksGenerator();
 	}
 
 	@Override

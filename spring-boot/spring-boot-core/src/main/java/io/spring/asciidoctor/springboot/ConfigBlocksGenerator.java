@@ -27,13 +27,7 @@ import java.util.function.Consumer;
  */
 public class ConfigBlocksGenerator {
 
-	private final Logger logger;
-
 	private final YamlToPropertiesConverter yamlToProperties = new YamlToPropertiesConverter();
-
-	public ConfigBlocksGenerator(Logger logger) {
-		this.logger = logger;
-	}
 
 	/**
 	 * Apply generation based on the given input.
@@ -41,7 +35,6 @@ public class ConfigBlocksGenerator {
 	 * @param out a customer that should be called with each output
 	 */
 	public void apply(ConfigBlock in, Consumer<ConfigBlock> out) {
-		this.logger.debug("Generating condig data blocks");
 		if (!"yaml".equalsIgnoreCase(in.getLanguage())) {
 			throw new IllegalArgumentException("Block generation is only supported for YAML inputs");
 		}

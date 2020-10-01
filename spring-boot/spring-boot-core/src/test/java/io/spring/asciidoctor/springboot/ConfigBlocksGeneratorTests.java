@@ -31,9 +31,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 class ConfigBlocksGeneratorTests {
 
-	private final TestLogger logger = new TestLogger();
-
-	private final ConfigBlocksGenerator generator = new ConfigBlocksGenerator(this.logger);
+	private final ConfigBlocksGenerator generator = new ConfigBlocksGenerator();
 
 	private final List<ConfigBlock> out = new ArrayList<>();
 

@@ -15,7 +15,7 @@ curl https://raw.githubusercontent.com/spring-io/concourse-java-scripts/v0.0.3/c
 ###########################################################
 # JAVA
 ###########################################################
-JDK_URL='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u242b08.tar.gz'
+JDK_URL='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u265-b01/OpenJDK8U-jdk_x64_linux_hotspot_8u265b01.tar.gz'
 
 mkdir -p /opt/openjdk
 cd /opt/openjdk

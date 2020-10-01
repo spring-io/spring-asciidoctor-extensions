@@ -27,10 +27,6 @@ subprojects {
 		testImplementation 'org.assertj:assertj-core:3.11.1'
 	}
 
-	checkstyle {
-		toolVersion = '8.29'
-	}
-
 	test {
 		useJUnitPlatform()
 	}

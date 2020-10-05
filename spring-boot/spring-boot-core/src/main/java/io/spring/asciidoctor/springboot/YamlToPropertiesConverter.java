@@ -77,19 +77,35 @@ public class YamlToPropertiesConverter {
 
 	private String getContent(List<String> source) {
 		StringBuilder builder = new StringBuilder();
-		source.stream().map(this::preProcess).forEach((line) -> builder.append(line).append("\n"));
+		for (int i = 0; i < source.size(); i++) {
+			String line = source.get(i);
+			String previousLine = (i > 0) ? source.get(i - 1) : "";
+			builder.append(preProcess(line, previousLine)).append("\n");
+		}
 		return builder.toString();
 	}
 
-	private String preProcess(String line) {
+	private String preProcess(String line, String previousLine) {
+		String indentation = getIndentation(previousLine);
 		if (line.isEmpty()) {
 			int i = this.counter++;
-			return BLANK_LINE + i + ": " + i;
+			return indentation + BLANK_LINE + i + ": " + i;
 		}
 		if (line.startsWith("# ")) {
-			return COMMENT + (this.counter++) + ": \"" + line + "\"";
+			return indentation + COMMENT + (this.counter++) + ": \"" + line + "\"";
 		}
 		return line;
+	}
+
+	private String getIndentation(String previousLine) {
+		StringBuilder result = new StringBuilder();
+		for (int i = 0; i < previousLine.length(); i++) {
+			if (previousLine.charAt(i) != ' ') {
+				return result.toString();
+			}
+			result.append(" ");
+		}
+		return result.toString();
 	}
 
 	private Yaml getYaml() {
@@ -193,10 +209,10 @@ public class YamlToPropertiesConverter {
 			}
 			String name = line.substring(0, split);
 			String value = line.substring(split);
-			if (name.startsWith(BLANK_LINE)) {
+			if (name.contains(BLANK_LINE)) {
 				return "";
 			}
-			if (name.startsWith(COMMENT)) {
+			if (name.contains(COMMENT)) {
 				try {
 					Properties properties = new Properties();
 					properties.load(new ByteArrayInputStream(line.getBytes(StandardCharsets.UTF_8)));

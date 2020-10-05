@@ -1,0 +1,4 @@
+spring:
+  foo: "bar"
+# A comment
+  bar: "baz"

@@ -16,8 +16,10 @@
 
 package io.spring.asciidoctor.springboot;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,6 +46,14 @@ public class YamlToPropertiesConverter {
 
 	private static final Pattern VALID_COMPONENT_NAME = Pattern.compile("^[a-z0-9][a-z0-9-\\.]*$");
 
+	private static final String PREFIX = YamlToPropertiesConverter.class.getName().replace(".", "").toLowerCase();
+
+	private static final String BLANK_LINE = PREFIX + "blankline";
+
+	private static final String COMMENT = PREFIX + "comment";
+
+	private int counter;
+
 	List<String> convertLines(List<String> source) {
 		String content = getContent(source);
 		List<Document> documents = convertContent(content);
@@ -67,8 +77,19 @@ public class YamlToPropertiesConverter {
 
 	private String getContent(List<String> source) {
 		StringBuilder builder = new StringBuilder();
-		source.forEach((line) -> builder.append(line).append("\n"));
+		source.stream().map(this::preProcess).forEach((line) -> builder.append(line).append("\n"));
 		return builder.toString();
+	}
+
+	private String preProcess(String line) {
+		if (line.isEmpty()) {
+			int i = this.counter++;
+			return BLANK_LINE + i + ": " + i;
+		}
+		if (line.startsWith("# ")) {
+			return COMMENT + (this.counter++) + ": \"" + line + "\"";
+		}
+		return line;
 	}
 
 	private Yaml getYaml() {
@@ -155,7 +176,7 @@ public class YamlToPropertiesConverter {
 			try {
 				StringWriter writer = new StringWriter();
 				store(writer, null);
-				List<String> lines = Arrays.stream(writer.toString().split("\n")).map(this::unescape)
+				List<String> lines = Arrays.stream(writer.toString().split("\n")).map(this::postProcess)
 						.collect(Collectors.toList());
 				lines.remove(0);
 				return lines;
@@ -165,14 +186,28 @@ public class YamlToPropertiesConverter {
 			}
 		}
 
-		private String unescape(String line) {
+		private String postProcess(String line) {
 			int split = line.indexOf('=');
 			if (split == -1) {
 				return line;
 			}
+			String name = line.substring(0, split);
 			String value = line.substring(split);
+			if (name.startsWith(BLANK_LINE)) {
+				return "";
+			}
+			if (name.startsWith(COMMENT)) {
+				try {
+					Properties properties = new Properties();
+					properties.load(new ByteArrayInputStream(line.getBytes(StandardCharsets.UTF_8)));
+					return (String) properties.values().iterator().next();
+				}
+				catch (IOException ex) {
+					throw new IllegalStateException(ex);
+				}
+			}
 			value = value.replace("\\:", ":");
-			return line.substring(0, split) + value;
+			return name + value;
 		}
 
 	}

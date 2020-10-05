@@ -30,6 +30,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -154,13 +155,24 @@ public class YamlToPropertiesConverter {
 			try {
 				StringWriter writer = new StringWriter();
 				store(writer, null);
-				List<String> lines = new ArrayList<>(Arrays.asList(writer.toString().split("\n")));
+				List<String> lines = Arrays.stream(writer.toString().split("\n")).map(this::unescape)
+						.collect(Collectors.toList());
 				lines.remove(0);
 				return lines;
 			}
 			catch (IOException ex) {
 				throw new IllegalStateException(ex);
 			}
+		}
+
+		private String unescape(String line) {
+			int split = line.indexOf('=');
+			if (split == -1) {
+				return line;
+			}
+			String value = line.substring(split);
+			value = value.replace("\\:", ":");
+			return line.substring(0, split) + value;
 		}
 
 	}

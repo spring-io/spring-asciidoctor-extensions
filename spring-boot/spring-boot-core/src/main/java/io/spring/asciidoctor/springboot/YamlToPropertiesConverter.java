@@ -56,15 +56,20 @@ public class YamlToPropertiesConverter {
 
 	List<String> convertLines(List<String> source) {
 		String content = getContent(source);
-		List<Document> documents = convertContent(content);
-		List<String> result = new ArrayList<>();
-		for (int i = 0; i < documents.size(); i++) {
-			result.addAll(documents.get(i).getLines());
-			if (i < documents.size() - 1) {
-				result.add("#---");
+		try {
+			List<Document> documents = convertContent(content);
+			List<String> result = new ArrayList<>();
+			for (int i = 0; i < documents.size(); i++) {
+				result.addAll(documents.get(i).getLines());
+				if (i < documents.size() - 1) {
+					result.add("#---");
+				}
 			}
+			return result;
 		}
-		return result;
+		catch (RuntimeException ex) {
+			throw new IllegalStateException(ex.getMessage() + "\n" + content, ex);
+		}
 	}
 
 	List<Document> convertContent(String content) {

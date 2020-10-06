@@ -1,3 +1,6 @@
 spring:
   config:
     import: "optional:classpath:foo.properties"
+  ldap:
+    embedded:
+      base-dn: "dc=spring,dc=io"

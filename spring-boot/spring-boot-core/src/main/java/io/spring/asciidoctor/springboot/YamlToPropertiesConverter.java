@@ -223,6 +223,7 @@ public class YamlToPropertiesConverter {
 				}
 			}
 			value = value.replace("\\:", ":");
+			value = value.replace("\\=", "=");
 			return name + value;
 		}
 

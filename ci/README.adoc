@@ -1,5 +1,12 @@
 == Concourse pipeline
 
+Ensure that you've setup the spring-boot target and can login
+
+[source]
+----
+$ fly -t spring-asciidoctor-extensions login -n spring-asciidoctor-extensions -c https://ci.spring.io
+----
+
 The pipeline can be deployed using the following command:
 
 [source]
@@ -7,30 +14,5 @@ The pipeline can be deployed using the following command:
 $ fly -t spring-asciidoctor-extensions set-pipeline -p spring-asciidoctor-extensions -c ci/pipeline.yml -l ci/parameters.yml
 ----
 
-NOTE: This assumes that you have CredHub integration configured with the appropriate secrets.
-
-=== Release
-
-To release a milestone:
-
-[source]
-----
-$ fly -t spring-asciidoctor-extensions trigger-job -j spring-asciidoctor-extensions/stage-milestone
-$ fly -t spring-asciidoctor-extensions trigger-job -j spring-asciidoctor-extensions/promote-milestone
-----
-
-To release an RC:
-
-[source]
-----
-$ fly -t spring-asciidoctor-extensions trigger-job -j spring-asciidoctor-extensions/stage-rc
-$ fly -t spring-asciidoctor-extensions trigger-job -j spring-asciidoctor-extensions/promote-rc
-----
-
-To release a GA:
-
-[source]
-----
-$ fly -t spring-asciidoctor-extensions trigger-job -j spring-asciidoctor-extensions/stage-release
-$ fly -t spring-asciidoctor-extensions trigger-job -j spring-asciidoctor-extensions/promote-release
-----
+NOTE: This assumes that you have credhub integration configured with the appropriate
+secrets.

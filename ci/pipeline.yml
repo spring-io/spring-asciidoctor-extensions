@@ -7,6 +7,7 @@ resource_types:
 resources:
 - name: git-repo
   type: git
+  icon: github
   source:
     uri: ((github-repo))
     username: ((github-username))
@@ -15,6 +16,7 @@ resources:
     ignore_paths: ["ci/images/*"]
 - name: github-pre-release
   type: github-release
+  icon: briefcase-download-outline
   source:
     owner: spring-io
     repository: spring-asciidoctor-extensions
@@ -22,6 +24,7 @@ resources:
     pre_release: true
 - name: github-release
   type: github-release
+  icon: briefcase-download
   source:
     owner: spring-io
     repository: spring-asciidoctor-extensions
@@ -29,45 +32,48 @@ resources:
     pre_release: false
 - name: ci-images-git-repo
   type: git
+  icon: github
   source:
     uri: ((github-repo))
     branch: ((branch))
     paths: ["ci/images/*"]
-- name: spring-asciidoctor-extensions-ci-image
+- name: ci-image
   type: docker-image
+  icon: docker
   source:
-    repository: ((docker-hub-organization))/spring-asciidoctor-extensions-ci-image
+    repository: ((docker-hub-organization))/((ci-image-name))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     tag: ((branch))
 - name: artifactory-repo
   type: artifactory-resource
+  icon: package-variant
   source:
     uri: ((artifactory-server))
     username: ((artifactory-username))
     password: ((artifactory-password))
     build_name: ((build-name))
 jobs:
-- name: build-spring-asciidoctor-extensions-ci-images
+- name: build-ci-images
   plan:
   - get: ci-images-git-repo
     trigger: true
-  - put: spring-asciidoctor-extensions-ci-image
+  - put: ci-image
     params:
       build: ci-images-git-repo/ci/images
-      dockerfile: ci-images-git-repo/ci/images/spring-asciidoctor-extensions-ci-image/Dockerfile
+      dockerfile: ci-images-git-repo/ci/images/ci-image/Dockerfile
 - name: build
   serial: true
   public: true
   plan:
-  - get: spring-asciidoctor-extensions-ci-image
+  - get: ci-image
   - get: git-repo
     trigger: true
   - do:
     - task: build-project
       privileged: true
       timeout: 1h30m
-      image: spring-asciidoctor-extensions-ci-image
+      image: ci-image
       file: git-repo/ci/tasks/build-project.yml
       params:
         BRANCH: ((branch))
@@ -85,11 +91,11 @@ jobs:
 - name: stage-milestone
   serial: true
   plan:
-  - get: spring-asciidoctor-extensions-ci-image
+  - get: ci-image
   - get: git-repo
     trigger: false
   - task: stage
-    image: spring-asciidoctor-extensions-ci-image
+    image: ci-image
     file: git-repo/ci/tasks/stage.yml
     params:
       BRANCH: ((branch))
@@ -107,11 +113,11 @@ jobs:
 - name: stage-rc
   serial: true
   plan:
-  - get: spring-asciidoctor-extensions-ci-image
+  - get: ci-image
   - get: git-repo
     trigger: false
   - task: stage
-    image: spring-asciidoctor-extensions-ci-image
+    image: ci-image
     file: git-repo/ci/tasks/stage.yml
     params:
       BRANCH: ((branch))
@@ -129,11 +135,11 @@ jobs:
 - name: stage-release
   serial: true
   plan:
-  - get: spring-asciidoctor-extensions-ci-image
+  - get: ci-image
   - get: git-repo
     trigger: false
   - task: stage
-    image: spring-asciidoctor-extensions-ci-image
+    image: ci-image
     file: git-repo/ci/tasks/stage.yml
     params:
       BRANCH: ((branch))
@@ -151,7 +157,7 @@ jobs:
 - name: promote-milestone
   serial: true
   plan:
-  - get: spring-asciidoctor-extensions-ci-image
+  - get: ci-image
   - get: git-repo
     trigger: false
   - get: artifactory-repo
@@ -160,7 +166,7 @@ jobs:
     params:
       save_build_info: true
   - task: promote
-    image: spring-asciidoctor-extensions-ci-image
+    image: ci-image
     file: git-repo/ci/tasks/promote.yml
     params:
       RELEASE_TYPE: M
@@ -181,7 +187,7 @@ jobs:
 - name: promote-rc
   serial: true
   plan:
-  - get: spring-asciidoctor-extensions-ci-image
+  - get: ci-image
   - get: git-repo
     trigger: false
   - get: artifactory-repo
@@ -190,7 +196,7 @@ jobs:
     params:
       save_build_info: true
   - task: promote
-    image: spring-asciidoctor-extensions-ci-image
+    image: ci-image
     file: git-repo/ci/tasks/promote.yml
     params:
       RELEASE_TYPE: RC
@@ -211,7 +217,7 @@ jobs:
 - name: promote-release
   serial: true
   plan:
-  - get: spring-asciidoctor-extensions-ci-image
+  - get: ci-image
   - get: git-repo
     trigger: false
   - get: artifactory-repo
@@ -220,7 +226,7 @@ jobs:
     params:
       save_build_info: true
   - task: promote
-    image: spring-asciidoctor-extensions-ci-image
+    image: ci-image
     file: git-repo/ci/tasks/promote.yml
     params:
       RELEASE_TYPE: RELEASE
@@ -243,9 +249,9 @@ jobs:
       tag: generated-release-notes/tag
       body: generated-release-notes/release-notes.md
 groups:
-- name: "Build"
+- name: "builds"
   jobs: ["build"]
-- name: "Release"
+- name: "releases"
   jobs: ["stage-milestone", "stage-rc", "stage-release", "promote-milestone", "promote-rc", "promote-release"]
-- name: "CI Images"
-  jobs: ["build-spring-asciidoctor-extensions-ci-images"]
+- name: "ci-images"
+  jobs: ["build-ci-images"]

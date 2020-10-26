@@ -28,6 +28,7 @@ import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -126,7 +127,12 @@ public class YamlToPropertiesConverter {
 		Map<Object, Object> map = (Map<Object, Object>) object;
 		map.forEach((key, value) -> {
 			String name = (key instanceof CharSequence) ? key.toString() : "[" + key + "]";
-			value = (value instanceof Map) ? asMap(value) : value;
+			if (value instanceof Map) {
+				value = asMap(value);
+			}
+			else if (!(value instanceof Collection)) {
+				value = String.valueOf(value);
+			}
 			result.put(name, value);
 		});
 		return result;
@@ -184,8 +190,12 @@ public class YamlToPropertiesConverter {
 
 		@Override
 		public synchronized Object get(Object key) {
-			Object value = this.entries.get(key);
-			return (value != null) ? String.valueOf(value) : null;
+			return this.entries.get(key);
+		}
+
+		@Override
+		public Set<Entry<Object, Object>> entrySet() {
+			return this.entries.entrySet();
 		}
 
 		@Override

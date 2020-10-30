@@ -31,9 +31,8 @@ public class BlockSwitchDocinfo {
 	public String header() {
 		String css = readResource("/blockSwitch.css");
 		String javascript = readResource("/blockSwitch.js");
-		return String.format("<style>%n%s%n</style>%n"
-				+ "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js\"></script>%n"
-				+ "<script type=\"text/javascript\">%n%s%n</script>%n", css, javascript);
+		return String.format("<style>%n%s%n</style>%n<script type=\"text/javascript\">%n%s%n</script>%n", css,
+				javascript);
 	}
 
 	private String readResource(String name) {

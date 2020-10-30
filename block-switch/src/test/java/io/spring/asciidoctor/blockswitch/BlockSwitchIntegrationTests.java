@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Options;
@@ -32,6 +33,10 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.images.builder.Transferable;
@@ -50,11 +55,20 @@ public class BlockSwitchIntegrationTests {
 
 	@Container
 	private final BrowserWebDriverContainer<?> chrome = new BrowserWebDriverContainer<>()
-			.withCapabilities(new ChromeOptions());
+			.withCapabilities(chromeOptions());
+
+	static ChromeOptions chromeOptions() {
+		ChromeOptions chromeOptions = new ChromeOptions();
+		LoggingPreferences loggingPreferences = new LoggingPreferences();
+		loggingPreferences.enable(LogType.BROWSER, Level.ALL);
+		chromeOptions.setCapability(CapabilityType.LOGGING_PREFS, loggingPreferences);
+		return chromeOptions;
+	}
 
 	@Test
 	void singleSwitchIsCreated() throws IOException {
 		RemoteWebDriver driver = load("singleSwitch.adoc");
+		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
 		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
 		assertThat(listings).hasSize(1);
 		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha").hasUnselectedItems("Bravo")
@@ -64,6 +78,7 @@ public class BlockSwitchIntegrationTests {
 	@Test
 	void multipleSwitchesWithSameOptionsAreCreated() throws IOException {
 		RemoteWebDriver driver = load("multipleSwitchesSameOptions.adoc");
+		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
 		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
 		assertThat(listings).hasSize(2).allSatisfy((element) -> assertThat(switchBlock(element))
 				.hasSelectedItem("Alpha").hasUnselectedItems("Bravo").hasDisplayedContentContaining("Alpha"));
@@ -72,6 +87,7 @@ public class BlockSwitchIntegrationTests {
 	@Test
 	void multipleSwitchesWithDifferentOptionsAreCreated() throws IOException {
 		RemoteWebDriver driver = load("multipleSwitchesDifferentOptions.adoc");
+		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
 		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
 		assertThat(listings).hasSize(2);
 		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha").hasUnselectedItems("Bravo")
@@ -83,6 +99,7 @@ public class BlockSwitchIntegrationTests {
 	@Test
 	void givenASingleSwitchWhenUnselectedItemIsClickedThenItBecomesSelected() throws IOException {
 		RemoteWebDriver driver = load("singleSwitch.adoc");
+		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
 		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
 		assertThat(listings).hasSize(1);
 		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha").hasUnselectedItems("Bravo")
@@ -93,6 +110,7 @@ public class BlockSwitchIntegrationTests {
 	@Test
 	void givenMultipleSwitchesWithTheSameOptionsWhenUnselectedItemIsClickedThenItBecomesSelected() throws IOException {
 		RemoteWebDriver driver = load("multipleSwitchesSameOptions.adoc");
+		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
 		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
 		assertThat(listings).hasSize(2);
 		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Alpha").hasUnselectedItems("Bravo")
@@ -108,6 +126,7 @@ public class BlockSwitchIntegrationTests {
 	void givenMultipleSwitchesWithDifferentOptionsWhenUnselectedItemIsClickedThenItBecomesSelected()
 			throws IOException {
 		RemoteWebDriver driver = load("multipleSwitchesDifferentOptions.adoc");
+		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
 		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
 		assertThat(listings).hasSize(2);
 		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Charlie").hasUnselectedItems("Delta", "Echo")
@@ -117,6 +136,19 @@ public class BlockSwitchIntegrationTests {
 				.hasUnselectedItems("Alpha").hasDisplayedContentContaining("Bravo 1");
 		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Charlie").hasUnselectedItems("Delta", "Echo")
 				.hasDisplayedContentContaining("Charlie 1");
+	}
+
+	@Test
+	void secondaryBlockWithNoPrimary() throws IOException {
+		RemoteWebDriver driver = load("secondaryBlockWithNoPrimary.adoc");
+		LogEntries browserLogs = driver.manage().logs().get(LogType.BROWSER);
+		assertThat(browserLogs).hasSize(1);
+		assertThat(browserLogs.iterator().next().getMessage())
+				.endsWith("\"Found secondary block with no primary sibling\"");
+		List<WebElement> primaries = driver.findElementsByCssSelector(".listingblock.primary");
+		assertThat(primaries).hasSize(0);
+		List<WebElement> secondaries = driver.findElementsByCssSelector(".listingblock.secondary");
+		assertThat(secondaries).hasSize(1);
 	}
 
 	private RemoteWebDriver load(String adocFile) throws IOException {

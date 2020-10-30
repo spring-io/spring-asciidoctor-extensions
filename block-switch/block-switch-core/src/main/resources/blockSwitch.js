@@ -7,10 +7,15 @@ function addBlockSwitches() {
 	}
 	for (var secondary of document.querySelectorAll('.secondary')) {
 		var primary = findPrimary(secondary);
-		var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
-		switchItem.content.classList.add("hidden");
-		primary.append(switchItem.content);
-		secondary.remove();
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
 	}
 }
 
@@ -28,7 +33,7 @@ function createBlockSwitch(primary) {
 
 function findPrimary(secondary) {
 	var candidate = secondary.previousElementSibling;
-	while (!candidate.classList.contains('primary')) {
+	while (candidate != null && !candidate.classList.contains('primary')) {
 		candidate = candidate.previousElementSibling;
 	}
 	return candidate;

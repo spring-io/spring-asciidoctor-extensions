@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 the original author or authors.
+ * Copyright 2014-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,16 @@ class BlockSwitchDocinfoProcessorTests {
 		String converted = Asciidoctor.Factory.create().convert(String.format("test"), options);
 		assertThat(converted).contains(".switch--item.selected");
 		assertThat(converted).contains("function addBlockSwitches()");
+	}
+
+	@Test
+	void postProcessorIncludesStartAndEndComments() {
+		Options options = new Options();
+		options.setHeaderFooter(true);
+		options.setSafe(SafeMode.SERVER);
+		String converted = Asciidoctor.Factory.create().convert(String.format("test"), options);
+		assertThat(converted).contains("<!--start-block-switch-docinfo-->");
+		assertThat(converted).contains("<!--end-block-switch-docinfo-->");
 	}
 
 }

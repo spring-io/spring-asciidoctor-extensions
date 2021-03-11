@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2021 the original author or authors.
+ * Copyright 2014-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,12 +31,8 @@ public class BlockSwitchDocinfo {
 	public String header() {
 		String css = readResource("/blockSwitch.css");
 		String javascript = readResource("/blockSwitch.js");
-		StringBuilder html = new StringBuilder();
-		html.append(String.format("<!--start-block-switch-docinfo-->%n"));
-		html.append(String.format("<style>%n%s%n</style>%n", css));
-		html.append(String.format("<script type=\"text/javascript\">%n%s%n</script>%n", javascript));
-		html.append(String.format("<!--end-block-switch-docinfo-->%n"));
-		return html.toString();
+		return String.format("<style>%n%s%n</style>%n<script type=\"text/javascript\">%n%s%n</script>%n", css,
+				javascript);
 	}
 
 	private String readResource(String name) {

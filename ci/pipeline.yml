@@ -77,6 +77,8 @@ jobs:
       file: git-repo/ci/tasks/build-project.yml
       params:
         BRANCH: ((branch))
+        DOCKER_HUB_USERNAME: ((docker-hub-username))
+        DOCKER_HUB_PASSWORD: ((docker-hub-password))
         GRADLE_ENTERPRISE_ACCESS_KEY: ((gradle_enterprise_secret_access_key))
         GRADLE_ENTERPRISE_CACHE_USERNAME: ((gradle_enterprise_cache_user.username))
         GRADLE_ENTERPRISE_CACHE_PASSWORD: ((gradle_enterprise_cache_user.password))
@@ -99,6 +101,8 @@ jobs:
     file: git-repo/ci/tasks/stage.yml
     params:
       BRANCH: ((branch))
+      DOCKER_HUB_USERNAME: ((docker-hub-username))
+      DOCKER_HUB_PASSWORD: ((docker-hub-password))
       GRADLE_ENTERPRISE_ACCESS_KEY: ((gradle_enterprise_secret_access_key))
       GRADLE_ENTERPRISE_CACHE_USERNAME: ((gradle_enterprise_cache_user.username))
       GRADLE_ENTERPRISE_CACHE_PASSWORD: ((gradle_enterprise_cache_user.password))
@@ -121,6 +125,8 @@ jobs:
     file: git-repo/ci/tasks/stage.yml
     params:
       BRANCH: ((branch))
+      DOCKER_HUB_USERNAME: ((docker-hub-username))
+      DOCKER_HUB_PASSWORD: ((docker-hub-password))
       GRADLE_ENTERPRISE_ACCESS_KEY: ((gradle_enterprise_secret_access_key))
       GRADLE_ENTERPRISE_CACHE_USERNAME: ((gradle_enterprise_cache_user.username))
       GRADLE_ENTERPRISE_CACHE_PASSWORD: ((gradle_enterprise_cache_user.password))
@@ -143,6 +149,8 @@ jobs:
     file: git-repo/ci/tasks/stage.yml
     params:
       BRANCH: ((branch))
+      DOCKER_HUB_USERNAME: ((docker-hub-username))
+      DOCKER_HUB_PASSWORD: ((docker-hub-password))
       GRADLE_ENTERPRISE_ACCESS_KEY: ((gradle_enterprise_secret_access_key))
       GRADLE_ENTERPRISE_CACHE_USERNAME: ((gradle_enterprise_cache_user.username))
       GRADLE_ENTERPRISE_CACHE_PASSWORD: ((gradle_enterprise_cache_user.password))

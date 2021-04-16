@@ -24,7 +24,4 @@ plugins {
 
 rootProject.name = 'spring-asciidoctor-extensions'
 include 'block-switch'
-include 'block-switch:block-switch-core'
-include 'block-switch:block-switch-aj1x'
-include 'block-switch:block-switch-aj2x'
 include 'spring-boot'

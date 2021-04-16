@@ -1,5 +1,0 @@
-dependencies {
-	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorj2Version"
-	implementation project(':spring-boot:spring-boot-core')
-	testImplementation "org.asciidoctor:asciidoctorj:$asciidoctorj2Version"
-}

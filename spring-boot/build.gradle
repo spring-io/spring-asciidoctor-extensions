@@ -1,17 +1,12 @@
-plugins {
-	id 'com.github.johnrengelman.shadow' version '5.1.0'
-}
-
 apply plugin: 'io.spring.compatibility-test'
 apply plugin: 'maven-publish'
 apply from: "$rootDir/gradle/publish-maven.gradle"
 
 dependencies {
-	runtimeOnly project(":spring-boot:spring-boot-aj15")
-	runtimeOnly project(":spring-boot:spring-boot-aj16")
-	runtimeOnly project(":spring-boot:spring-boot-aj2x")
+	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
+	implementation "com.google.code.gson:gson:2.8.5"
+	implementation "org.yaml:snakeyaml:1.27"
 	testImplementation "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
-	testImplementation project(":spring-boot:spring-boot-core")
 }
 
 compatibilityTest {
@@ -20,34 +15,18 @@ compatibilityTest {
 		asciidoctorj.groupId = 'org.asciidoctor'
 		asciidoctorj.artifactId = 'asciidoctorj'
 		asciidoctorj.versions = [
-			asciidoctorj16Version,
 			asciidoctorj20Version,
 			asciidoctorj21Version,
 			asciidoctorj22Version,
-			asciidoctorj23Version,
-			asciidoctorj24Version
+			asciidoctorj23Version
 		]
 	}
 }
 
-shadowJar {
-	mergeServiceFiles()
-	classifier = ''
-	relocate 'com.google.gson', 'io.spring.asciidoctor.springboot.gson'
-}
-
-jar {
-	enabled = false
-}
-
-assemble {
-	dependsOn shadowJar
-}
-
 publishing {
 	publications {
-		shadow(MavenPublication) { publication ->
-			project.shadow.component(publication)
+		maven(MavenPublication) { publication ->
+			from components.java
 		}
 	}
 }

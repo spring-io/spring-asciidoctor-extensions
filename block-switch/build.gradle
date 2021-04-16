@@ -1,15 +1,9 @@
-plugins {
-	id 'com.github.johnrengelman.shadow' version '5.1.0'
-}
-
 apply plugin: 'io.spring.compatibility-test'
 apply plugin: 'maven-publish'
 apply from: "$rootDir/gradle/publish-maven.gradle"
 
 dependencies {
-	runtimeOnly project(":block-switch:block-switch-aj1x")
-	runtimeOnly project(":block-switch:block-switch-aj2x")
-	
+	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 	testImplementation "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 	testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:3.141.59"
 	testImplementation "org.seleniumhq.selenium:selenium-remote-driver:3.141.59"
@@ -24,33 +18,18 @@ compatibilityTest {
 		asciidoctorj.groupId = 'org.asciidoctor'
 		asciidoctorj.artifactId = 'asciidoctorj'
 		asciidoctorj.versions = [
-			asciidoctorj16Version,
 			asciidoctorj20Version,
 			asciidoctorj21Version,
 			asciidoctorj22Version,
 			asciidoctorj23Version,
-			asciidoctorj24Version
 		]
 	}
 }
 
-shadowJar {
-	mergeServiceFiles()
-	classifier = ''
-}
-
-jar {
-	enabled = false
-}
-
-assemble {
-	dependsOn shadowJar
-}
-
 publishing {
 	publications {
-		shadow(MavenPublication) { publication ->
-			project.shadow.component(publication)
+		maven(MavenPublication) { publication ->
+			from components.java
 		}
 	}
 }

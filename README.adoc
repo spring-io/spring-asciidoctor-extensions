@@ -1,6 +1,9 @@
-:version: 0.2.1.BUILD-SNAPSHOT
-
 = Spring Asciidoctor Extensions
+
+== Requirements
+
+* AsciidoctorJ 2.x
+* Java 1.8 or later
 
 == Getting the extensions
 
@@ -144,9 +147,5 @@ example:
 The extensions can be added to your project using the standard mechanism for your build system.
 Please consult the relevant documentation for details:
 
-* Asciidoctor Gradle Plugin
-  ** https://asciidoctor.github.io/asciidoctor-gradle-plugin/development-3.x/user-guide/#_as_external_library[3.x]
-  ** https://asciidoctor.github.io/asciidoctor-gradle-plugin/development-2.0/user-guide/#_as_external_library[2.x]
-  ** https://github.com/asciidoctor/asciidoctor-gradle-plugin/tree/maintenance-1.6#as-external-library[1.6]
-  ** https://github.com/asciidoctor/asciidoctor-gradle-plugin/tree/maintenance-1.5#as-external-library[1.5]
+* https://asciidoctor.github.io/asciidoctor-gradle-plugin/development-3.x/user-guide/#_as_external_library[Asciidoctor Gradle Plugin]
 * https://asciidoctor.org/docs/asciidoctor-maven-plugin/#configuration[Asciidoctor Maven Plugin]

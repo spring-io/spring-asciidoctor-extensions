@@ -241,10 +241,6 @@ jobs:
       ARTIFACTORY_SERVER: ((artifactory-server))
       ARTIFACTORY_USERNAME: ((artifactory-username))
       ARTIFACTORY_PASSWORD: ((artifactory-password))
-      BINTRAY_SUBJECT: ((bintray-subject))
-      BINTRAY_REPO: ((bintray-repo))
-      BINTRAY_USERNAME: ((bintray-username))
-      BINTRAY_API_KEY: ((bintray-api-key))
   - task: generate-release-notes
     file: git-repo/ci/tasks/generate-release-notes.yml
     params:

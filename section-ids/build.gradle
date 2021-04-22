@@ -1,0 +1,15 @@
+apply plugin: 'maven-publish'
+apply from: "$rootDir/gradle/publish-maven.gradle"
+
+dependencies {
+	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
+	testImplementation "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) { publication ->
+			from components.java
+		}
+	}
+}

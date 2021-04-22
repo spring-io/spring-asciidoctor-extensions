@@ -142,6 +142,24 @@ example:
 ----
 
 
+=== Section IDs
+
+`io.spring.asciidoctor:spring-asciidoctor-extensions-section-ids`
+
+
+=== Description
+
+Validates a document's section IDs.
+Ensures that each ID uses kebab-case and that the IDs of nested sections being with their parent section's ID following by a `.`.
+The following IDs are valid:
+
+* `top-level`
+** `top-level.nested-child`
+*** `top-level.nested-child.grandchild`
+
+A warning is logged for each invalid ID.
+
+
 == Adding the extensions to your project
 
 The extensions can be added to your project using the standard mechanism for your build system.

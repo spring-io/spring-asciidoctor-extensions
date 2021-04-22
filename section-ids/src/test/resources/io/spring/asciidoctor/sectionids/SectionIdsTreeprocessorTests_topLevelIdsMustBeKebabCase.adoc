@@ -1,0 +1,25 @@
+= Title
+
+[[kebab-case]]
+== Kebab Case
+
+[[kebab-case-9]]
+== Kebab Case With Trailing Number
+
+[[whatever-9-kebab-case]]
+== Kebab Case With Leading Number
+
+[[kebab-9-case]]
+== Kebab Case With Number
+
+[[snake_case]]
+== Snake Case
+
+[[trailing-dash-kebab-case-]]
+== Trailing Dash Kebab Case
+
+[[double--dash-kebab-case]]
+== Double Dash Kebab Case
+
+[[singleword]]
+== Single Word

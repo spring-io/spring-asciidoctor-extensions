@@ -108,6 +108,19 @@ public class BlockSwitchIntegrationTests {
 	}
 
 	@Test
+	void givenASingleSwitchWithCalloutsWhenUnselectedItemIsClickedThenItBecomesSelectedAndItsCalloutsBecomeVisible()
+			throws IOException {
+		RemoteWebDriver driver = load("singleSwitchWithCallouts.adoc");
+		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
+		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
+		assertThat(listings).hasSize(1);
+		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha").hasUnselectedItems("Bravo")
+				.hasDisplayedContentContaining("Alpha 1").hasDisplayedCalloutListContaining("Alpha callout")
+				.uponClicking("Bravo").hasSelectedItem("Bravo").hasUnselectedItems("Alpha")
+				.hasDisplayedCalloutListContaining("Bravo callout");
+	}
+
+	@Test
 	void givenMultipleSwitchesWithTheSameOptionsWhenUnselectedItemIsClickedThenItBecomesSelected() throws IOException {
 		RemoteWebDriver driver = load("multipleSwitchesSameOptions.adoc");
 		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
@@ -188,7 +201,15 @@ public class BlockSwitchIntegrationTests {
 		}
 
 		SwitchBlockAssert hasDisplayedContentContaining(String contained) {
-			WebElement content = this.actual.findElement(By.cssSelector((".content:not(.hidden)")));
+			WebElement content = this.actual.findElement(By.cssSelector(".content:not(.hidden)"));
+			assertThat(content.isDisplayed()).isTrue();
+			assertThat(content.getText()).contains(contained);
+			return this;
+		}
+
+		SwitchBlockAssert hasDisplayedCalloutListContaining(String contained) {
+			WebElement content = this.actual.findElement(By.cssSelector(".content:not(.hidden)"))
+					.findElement(By.cssSelector(".colist"));
 			assertThat(content.isDisplayed()).isTrue();
 			assertThat(content.getText()).contains(contained);
 			return this;

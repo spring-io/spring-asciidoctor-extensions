@@ -42,15 +42,25 @@ function findPrimary(secondary) {
 function createSwitchItem(block, blockSwitch) {
 	var blockName = block.querySelector('.title').textContent;
 	var content = block.querySelectorAll('.content').item(0);
-	var colist = block.querySelector('.colist')
+	var colist = nextSibling(block, '.colist');
 	if (colist != null) {
-		content.append();
+		content.append(colist);
 	}
 	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
 	item.dataset.blockName = blockName;
 	content.dataset.blockName = blockName;
 	blockSwitch.append(item);
 	return {'item': item, 'content': content};
+}
+
+function nextSibling(element, selector) {
+	var sibling = element.nextElementSibling;
+	while (sibling) {
+		if (sibling.matches(selector)) {
+			return sibling;
+		}
+		sibling = sibling.nextElementSibling;
+	}
 }
 
 function globalSwitch() {

@@ -1,5 +1,8 @@
-apply plugin: 'io.spring.compatibility-test'
-apply plugin: 'maven-publish'
+plugins {
+	id 'io.spring.compatibility-test' version '0.0.1'
+	id 'maven-publish'
+}
+
 apply from: "$rootDir/gradle/publish-maven.gradle"
 
 dependencies {

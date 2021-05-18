@@ -8,8 +8,8 @@ dependencies {
 	testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:3.141.59"
 	testImplementation "org.seleniumhq.selenium:selenium-remote-driver:3.141.59"
 	testImplementation "org.slf4j:slf4j-simple:1.7.30"
-	testImplementation "org.testcontainers:junit-jupiter:1.12.5"
-	testImplementation "org.testcontainers:selenium:1.12.5"
+	testImplementation "org.testcontainers:junit-jupiter:1.15.3"
+	testImplementation "org.testcontainers:selenium:1.15.3"
 }
 
 compatibilityTest {

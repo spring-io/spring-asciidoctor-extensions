@@ -1,6 +1,8 @@
 apply plugin: 'maven-publish'
 apply from: "$rootDir/gradle/publish-maven.gradle"
 
+description = "Section IDs Asciidoctor Extension"
+
 dependencies {
 	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 	testImplementation "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"

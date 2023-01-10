@@ -3,6 +3,8 @@ plugins {
 	id 'maven-publish'
 }
 
+description = "Spring Boot Asciidoctor Extension"
+
 apply from: "$rootDir/gradle/publish-maven.gradle"
 
 dependencies {

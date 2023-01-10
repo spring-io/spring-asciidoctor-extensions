@@ -5,6 +5,8 @@ plugins {
 
 apply from: "$rootDir/gradle/publish-maven.gradle"
 
+description = "Block Switch Asciidoctor Extension"
+
 dependencies {
 	compileOnly "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 	testImplementation "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"

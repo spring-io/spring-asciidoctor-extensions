@@ -31,4 +31,9 @@ subprojects {
 	test {
 		useJUnitPlatform()
 	}
+
+	java {
+		withJavadocJar()
+		withSourcesJar()
+	}
 }

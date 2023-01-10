@@ -98,6 +98,8 @@ jobs:
         GRADLE_ENTERPRISE_CACHE_PASSWORD: ((gradle_enterprise_cache_user.password))
   - put: artifactory-repo
     params: &artifactory-params
+      signing_key: ((signing-key))
+      signing_passphrase: ((signing-passphrase))
       repo: libs-snapshot-local
       build_number: "${BUILD_ID}"
       folder: distribution-repository

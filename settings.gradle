@@ -17,8 +17,8 @@ pluginManagement {
 }
 
 plugins {
-	id "com.gradle.enterprise" version "3.6.1"
-	id "io.spring.ge.conventions" version "0.0.7"
+	id "com.gradle.enterprise" version "3.12.2"
+	id "io.spring.ge.conventions" version "0.0.13"
 }
 
 rootProject.name = 'spring-asciidoctor-extensions'

@@ -181,7 +181,6 @@ jobs:
 - name: promote-milestone
   serial: true
   plan:
-  - get: ci-image
   - get: git-repo
     trigger: false
   - get: artifactory-repo
@@ -190,7 +189,6 @@ jobs:
     params:
       save_build_info: true
   - task: promote
-    image: ci-image
     file: git-repo/ci/tasks/promote.yml
     params:
       RELEASE_TYPE: M
@@ -211,7 +209,6 @@ jobs:
 - name: promote-rc
   serial: true
   plan:
-  - get: ci-image
   - get: git-repo
     trigger: false
   - get: artifactory-repo
@@ -220,7 +217,6 @@ jobs:
     params:
       save_build_info: true
   - task: promote
-    image: ci-image
     file: git-repo/ci/tasks/promote.yml
     params:
       RELEASE_TYPE: RC
@@ -241,7 +237,6 @@ jobs:
 - name: promote-release
   serial: true
   plan:
-  - get: ci-image
   - get: git-repo
     trigger: false
   - get: artifactory-repo
@@ -250,10 +245,13 @@ jobs:
     params:
       save_build_info: true
   - task: promote
-    image: ci-image
     file: git-repo/ci/tasks/promote.yml
     params:
       RELEASE_TYPE: RELEASE
+      SONATYPE_USERNAME: ((s01-user-token))
+      SONATYPE_PASSWORD: ((s01-user-token-password))
+      SONATYPE_URL: ((sonatype-url))
+      SONATYPE_STAGING_PROFILE_ID: ((sonatype-staging-profile-id))
       ARTIFACTORY_SERVER: ((artifactory-server))
       ARTIFACTORY_USERNAME: ((artifactory-username))
       ARTIFACTORY_PASSWORD: ((artifactory-password))

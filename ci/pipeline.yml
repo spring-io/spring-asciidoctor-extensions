@@ -45,6 +45,10 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     tag: ((branch))
+    registry_mirror:
+      host: ((docker-hub-mirror))
+      username: ((docker-hub-mirror-username))
+      password: ((docker-hub-mirror-password))
 - name: artifactory-repo
   type: artifactory-resource
   icon: package-variant
@@ -66,6 +70,9 @@ jobs:
       image: ci-image
     vars:
       ci-image-name: ci-image
+      docker-hub-mirror: ((docker-hub-mirror))
+      docker-hub-mirror-username: ((docker-hub-mirror-username))
+      docker-hub-mirror-password: ((docker-hub-mirror-password))
   - put: ci-image
     params:
       image: ci-image/image.tar

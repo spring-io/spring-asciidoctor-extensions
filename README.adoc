@@ -7,7 +7,7 @@
 
 == Getting the extensions
 
-Releases are published to the https://repo.spring.io/release Maven repository.
+Releases are published to Maven Central.
 Snapshots are published to the https://repo.spring.io/snapshot Maven repository.
 
 == Available extensions

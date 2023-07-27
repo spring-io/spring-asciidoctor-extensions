@@ -32,12 +32,17 @@ class BlockSwitchDocinfoProcessorTests {
 
 	@Test
 	void postProcessorIsApplied() {
-		Options options = new Options();
+		Options options = options();
 		options.setHeaderFooter(true);
 		options.setSafe(SafeMode.SERVER);
 		String converted = Asciidoctor.Factory.create().convert(String.format("test"), options);
 		assertThat(converted).contains(".switch--item.selected");
 		assertThat(converted).contains("function addBlockSwitches()");
+	}
+
+	@SuppressWarnings("deprecation")
+	private Options options() {
+		return new Options();
 	}
 
 }

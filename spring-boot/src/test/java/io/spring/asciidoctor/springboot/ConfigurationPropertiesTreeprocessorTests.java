@@ -107,9 +107,14 @@ class ConfigurationPropertiesTreeprocessorTests {
 	}
 
 	private String convert(String source) {
-		Options options = new Options();
+		Options options = options();
 		options.setSafe(SafeMode.SERVER);
 		return this.asciidoctor.convert(source, options);
+	}
+
+	@SuppressWarnings("deprecation")
+	private Options options() {
+		return new Options();
 	}
 
 }

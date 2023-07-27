@@ -191,10 +191,10 @@ public class BlockSwitchIntegrationTests {
 	}
 
 	private RemoteWebDriver load(String adocFile) throws IOException {
-		Options options = new Options();
+		Options options = options();
 		options.setHeaderFooter(true);
 		options.setSafe(SafeMode.SERVER);
-		Attributes attributes = new Attributes();
+		Attributes attributes = attributes();
 		attributes.setAttribute("!webfonts", null);
 		options.setAttributes(attributes);
 		String converted = Asciidoctor.Factory.create()
@@ -204,6 +204,16 @@ public class BlockSwitchIntegrationTests {
 		RemoteWebDriver driver = this.chrome.getWebDriver();
 		driver.get("file:///test.html");
 		return driver;
+	}
+
+	@SuppressWarnings("deprecation")
+	private Options options() {
+		return new Options();
+	}
+
+	@SuppressWarnings("deprecation")
+	private Attributes attributes() {
+		return new Attributes();
 	}
 
 	private SwitchBlockAssert switchBlock(WebElement element) {

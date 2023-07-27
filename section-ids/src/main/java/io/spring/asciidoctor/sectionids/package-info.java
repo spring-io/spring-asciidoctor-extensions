@@ -17,4 +17,4 @@
 /**
  * Asciidoctor extension for enforcing section ID conventions.
  */
-package io.spring.asciidoctor.blockswitch;
+package io.spring.asciidoctor.sectionids;

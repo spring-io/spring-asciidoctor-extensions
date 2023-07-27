@@ -17,4 +17,4 @@
 /**
  * Asciidoctor extensions for writing Spring Boot-related documentation.
  */
-package io.spring.asciidoctor.blockswitch;
+package io.spring.asciidoctor.springboot;

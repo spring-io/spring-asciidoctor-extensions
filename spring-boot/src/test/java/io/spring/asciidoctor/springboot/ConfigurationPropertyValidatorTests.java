@@ -45,16 +45,16 @@ class ConfigurationPropertyValidatorTests {
 	@Test
 	void whenPropertyCanBeFoundASingleDebugMessageIsLogged() {
 		assertThat(this.validator.validateProperty("project.a.alpha", ValidationSettings.DEFAULT))
-				.isEqualTo("project.a.alpha");
+			.isEqualTo("project.a.alpha");
 		assertThat(this.logger).warnMessages().isEmpty();
 		assertThat(this.logger).debugMessages()
-				.containsExactly("Configuration property 'project.a.alpha' successfully validated.");
+			.containsExactly("Configuration property 'project.a.alpha' successfully validated.");
 	}
 
 	@Test
 	void whenPropertyCannotBeFoundASingleWarnMessageIsLogged() {
 		assertThat(this.validator.validateProperty("project.a.delta", ValidationSettings.DEFAULT))
-				.isEqualTo("project.a.delta");
+			.isEqualTo("project.a.delta");
 		assertThat(this.logger).warnMessages().containsExactly("Configuration property 'project.a.delta' not found.");
 		assertThat(this.logger).debugMessages().isEmpty();
 	}
@@ -76,28 +76,30 @@ class ConfigurationPropertyValidatorTests {
 	@Test
 	void whenAnUndeprecatedPropertyIsExpectedToBeDeprecatedAWarnMessageIsLogged() {
 		assertThat(this.validator.validateProperty("project.a.alpha", new ValidationSettings(true, Format.CANONICAL)))
-				.isEqualTo("project.a.alpha");
+			.isEqualTo("project.a.alpha");
 		assertThat(this.logger).warnMessages()
-				.containsExactly("Configuration property 'project.a.alpha' is not deprecated.");
+			.containsExactly("Configuration property 'project.a.alpha' is not deprecated.");
 		assertThat(this.logger).debugMessages().isEmpty();
 	}
 
 	@Test
 	void whenADeprecatedPropertyIsNotExpectedToBeDeprecatedAWarnMessageIsLogged() {
 		assertThat(this.validator.validateProperty("project.a.bravo-property",
-				new ValidationSettings(false, Format.CANONICAL))).isEqualTo("project.a.bravo-property");
+				new ValidationSettings(false, Format.CANONICAL)))
+			.isEqualTo("project.a.bravo-property");
 		assertThat(this.logger).warnMessages()
-				.containsExactly("Configuration property 'project.a.bravo-property' is deprecated.");
+			.containsExactly("Configuration property 'project.a.bravo-property' is deprecated.");
 		assertThat(this.logger).debugMessages().isEmpty();
 	}
 
 	@Test
 	void whenPropertyNotInTheMetadataHasAMapAncestorValidatePropertyReturnsAndLogsTheFullPropertyName() {
 		assertThat(this.validator.validateProperty("project.a.charlie.beneath-map",
-				new ValidationSettings(false, Format.CANONICAL))).isEqualTo("project.a.charlie.beneath-map");
+				new ValidationSettings(false, Format.CANONICAL)))
+			.isEqualTo("project.a.charlie.beneath-map");
 		assertThat(this.logger).warnMessages().isEmpty();
 		assertThat(this.logger).debugMessages()
-				.containsExactly("Configuration property 'project.a.charlie.beneath-map' successfully validated.");
+			.containsExactly("Configuration property 'project.a.charlie.beneath-map' successfully validated.");
 	}
 
 }

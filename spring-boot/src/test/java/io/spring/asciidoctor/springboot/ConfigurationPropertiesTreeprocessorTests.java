@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,8 +64,8 @@ class ConfigurationPropertiesTreeprocessorTests {
 				"example.property.charlie=c\n" + //
 				"----");
 		assertThat(this.logRecords).hasSize(3);
-		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactlyInAnyOrder(Severity.DEBUG,
-				Severity.DEBUG, Severity.WARN);
+		assertThat(this.logRecords).extracting(LogRecord::getSeverity)
+			.containsExactlyInAnyOrder(Severity.DEBUG, Severity.DEBUG, Severity.WARN);
 	}
 
 	@Test
@@ -81,8 +81,8 @@ class ConfigurationPropertiesTreeprocessorTests {
 				"    exist: b\n" + //
 				"----");
 		assertThat(this.logRecords).hasSize(3);
-		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactlyInAnyOrder(Severity.DEBUG,
-				Severity.DEBUG, Severity.WARN);
+		assertThat(this.logRecords).extracting(LogRecord::getSeverity)
+			.containsExactlyInAnyOrder(Severity.DEBUG, Severity.DEBUG, Severity.WARN);
 	}
 
 	@Test

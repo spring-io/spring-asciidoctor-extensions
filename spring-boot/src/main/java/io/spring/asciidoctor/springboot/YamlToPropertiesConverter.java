@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2021 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -207,8 +207,9 @@ public class YamlToPropertiesConverter {
 			try {
 				StringWriter writer = new StringWriter();
 				store(writer, null);
-				List<String> lines = Arrays.stream(writer.toString().split("\n")).map(this::postProcess)
-						.collect(Collectors.toList());
+				List<String> lines = Arrays.stream(writer.toString().split("\n"))
+					.map(this::postProcess)
+					.collect(Collectors.toList());
 				lines.remove(0);
 				return lines;
 			}

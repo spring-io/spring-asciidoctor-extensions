@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ public class BlockSwitchIntegrationTests {
 
 	@Container
 	private final BrowserWebDriverContainer<?> chrome = new BrowserWebDriverContainer<>()
-			.withCapabilities(chromeOptions());
+		.withCapabilities(chromeOptions());
 
 	static ChromeOptions chromeOptions() {
 		ChromeOptions chromeOptions = new ChromeOptions();
@@ -71,8 +71,9 @@ public class BlockSwitchIntegrationTests {
 		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
 		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
 		assertThat(listings).hasSize(1);
-		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha").hasUnselectedItems("Bravo")
-				.hasDisplayedContentContaining("Alpha 1");
+		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha")
+			.hasUnselectedItems("Bravo")
+			.hasDisplayedContentContaining("Alpha 1");
 	}
 
 	@Test
@@ -80,8 +81,10 @@ public class BlockSwitchIntegrationTests {
 		RemoteWebDriver driver = load("multipleSwitchesSameOptions.adoc");
 		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
 		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
-		assertThat(listings).hasSize(2).allSatisfy((element) -> assertThat(switchBlock(element))
-				.hasSelectedItem("Alpha").hasUnselectedItems("Bravo").hasDisplayedContentContaining("Alpha"));
+		assertThat(listings).hasSize(2)
+			.allSatisfy((element) -> assertThat(switchBlock(element)).hasSelectedItem("Alpha")
+				.hasUnselectedItems("Bravo")
+				.hasDisplayedContentContaining("Alpha"));
 	}
 
 	@Test
@@ -90,10 +93,12 @@ public class BlockSwitchIntegrationTests {
 		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
 		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
 		assertThat(listings).hasSize(2);
-		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha").hasUnselectedItems("Bravo")
-				.hasDisplayedContentContaining("Alpha");
-		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Charlie").hasUnselectedItems("Delta", "Echo")
-				.hasDisplayedContentContaining("Charlie 1");
+		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha")
+			.hasUnselectedItems("Bravo")
+			.hasDisplayedContentContaining("Alpha");
+		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Charlie")
+			.hasUnselectedItems("Delta", "Echo")
+			.hasDisplayedContentContaining("Charlie 1");
 	}
 
 	@Test
@@ -102,9 +107,13 @@ public class BlockSwitchIntegrationTests {
 		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
 		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
 		assertThat(listings).hasSize(1);
-		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha").hasUnselectedItems("Bravo")
-				.hasDisplayedContentContaining("Alpha 1").uponClicking("Bravo").hasSelectedItem("Bravo")
-				.hasUnselectedItems("Alpha").hasDisplayedContentContaining("Bravo 1");
+		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha")
+			.hasUnselectedItems("Bravo")
+			.hasDisplayedContentContaining("Alpha 1")
+			.uponClicking("Bravo")
+			.hasSelectedItem("Bravo")
+			.hasUnselectedItems("Alpha")
+			.hasDisplayedContentContaining("Bravo 1");
 	}
 
 	@Test
@@ -114,10 +123,14 @@ public class BlockSwitchIntegrationTests {
 		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
 		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
 		assertThat(listings).hasSize(1);
-		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha").hasUnselectedItems("Bravo")
-				.hasDisplayedContentContaining("Alpha 1").hasDisplayedCalloutListContaining("Alpha callout")
-				.uponClicking("Bravo").hasSelectedItem("Bravo").hasUnselectedItems("Alpha")
-				.hasDisplayedCalloutListContaining("Bravo callout");
+		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha")
+			.hasUnselectedItems("Bravo")
+			.hasDisplayedContentContaining("Alpha 1")
+			.hasDisplayedCalloutListContaining("Alpha callout")
+			.uponClicking("Bravo")
+			.hasSelectedItem("Bravo")
+			.hasUnselectedItems("Alpha")
+			.hasDisplayedCalloutListContaining("Bravo callout");
 	}
 
 	@Test
@@ -126,13 +139,19 @@ public class BlockSwitchIntegrationTests {
 		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
 		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
 		assertThat(listings).hasSize(2);
-		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Alpha").hasUnselectedItems("Bravo")
-				.hasDisplayedContentContaining("Alpha 2");
-		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha").hasUnselectedItems("Bravo")
-				.hasDisplayedContentContaining("Alpha 1").uponClicking("Bravo").hasSelectedItem("Bravo")
-				.hasUnselectedItems("Alpha").hasDisplayedContentContaining("Bravo 1");
-		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Bravo").hasUnselectedItems("Alpha")
-				.hasDisplayedContentContaining("Bravo 2");
+		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Alpha")
+			.hasUnselectedItems("Bravo")
+			.hasDisplayedContentContaining("Alpha 2");
+		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha")
+			.hasUnselectedItems("Bravo")
+			.hasDisplayedContentContaining("Alpha 1")
+			.uponClicking("Bravo")
+			.hasSelectedItem("Bravo")
+			.hasUnselectedItems("Alpha")
+			.hasDisplayedContentContaining("Bravo 1");
+		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Bravo")
+			.hasUnselectedItems("Alpha")
+			.hasDisplayedContentContaining("Bravo 2");
 	}
 
 	@Test
@@ -142,13 +161,19 @@ public class BlockSwitchIntegrationTests {
 		assertThat(driver.manage().logs().get(LogType.BROWSER)).isEmpty();
 		List<WebElement> listings = driver.findElementsByCssSelector(".listingblock.primary");
 		assertThat(listings).hasSize(2);
-		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Charlie").hasUnselectedItems("Delta", "Echo")
-				.hasDisplayedContentContaining("Charlie 1");
-		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha").hasUnselectedItems("Bravo")
-				.hasDisplayedContentContaining("Alpha 1").uponClicking("Bravo").hasSelectedItem("Bravo")
-				.hasUnselectedItems("Alpha").hasDisplayedContentContaining("Bravo 1");
-		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Charlie").hasUnselectedItems("Delta", "Echo")
-				.hasDisplayedContentContaining("Charlie 1");
+		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Charlie")
+			.hasUnselectedItems("Delta", "Echo")
+			.hasDisplayedContentContaining("Charlie 1");
+		assertThat(switchBlock(listings.get(0))).hasSelectedItem("Alpha")
+			.hasUnselectedItems("Bravo")
+			.hasDisplayedContentContaining("Alpha 1")
+			.uponClicking("Bravo")
+			.hasSelectedItem("Bravo")
+			.hasUnselectedItems("Alpha")
+			.hasDisplayedContentContaining("Bravo 1");
+		assertThat(switchBlock(listings.get(1))).hasSelectedItem("Charlie")
+			.hasUnselectedItems("Delta", "Echo")
+			.hasDisplayedContentContaining("Charlie 1");
 	}
 
 	@Test
@@ -157,7 +182,7 @@ public class BlockSwitchIntegrationTests {
 		LogEntries browserLogs = driver.manage().logs().get(LogType.BROWSER);
 		assertThat(browserLogs).hasSize(1);
 		assertThat(browserLogs.iterator().next().getMessage())
-				.endsWith("\"Found secondary block with no primary sibling\"");
+			.endsWith("\"Found secondary block with no primary sibling\"");
 		List<WebElement> primaries = driver.findElementsByCssSelector(".listingblock.primary");
 		assertThat(primaries).hasSize(0);
 		List<WebElement> secondaries = driver.findElementsByCssSelector(".listingblock.secondary");
@@ -168,9 +193,9 @@ public class BlockSwitchIntegrationTests {
 		Options options = new Options();
 		options.setHeaderFooter(true);
 		options.setSafe(SafeMode.SERVER);
-		String converted = Asciidoctor.Factory.create().convert(
-				new String(Files.readAllBytes(Paths.get("src", "test", "resources", adocFile)), StandardCharsets.UTF_8),
-				options);
+		String converted = Asciidoctor.Factory.create()
+			.convert(new String(Files.readAllBytes(Paths.get("src", "test", "resources", adocFile)),
+					StandardCharsets.UTF_8), options);
 		this.chrome.copyFileToContainer(Transferable.of(converted.getBytes(StandardCharsets.UTF_8)), "/test.html");
 		RemoteWebDriver driver = this.chrome.getWebDriver();
 		driver.get("file:///test.html");
@@ -209,7 +234,7 @@ public class BlockSwitchIntegrationTests {
 
 		SwitchBlockAssert hasDisplayedCalloutListContaining(String contained) {
 			WebElement content = this.actual.findElement(By.cssSelector(".content:not(.hidden)"))
-					.findElement(By.cssSelector(".colist"));
+				.findElement(By.cssSelector(".colist"));
 			assertThat(content.isDisplayed()).isTrue();
 			assertThat(content.getText()).contains(contained);
 			return this;
@@ -217,8 +242,9 @@ public class BlockSwitchIntegrationTests {
 
 		SwitchBlockAssert uponClicking(String item) {
 			List<WebElement> unselected = this.actual.findElements(By.cssSelector(".switch--item:not(.selected)"));
-			Optional<WebElement> match = unselected.stream().filter((element) -> element.getText().equals(item))
-					.findFirst();
+			Optional<WebElement> match = unselected.stream()
+				.filter((element) -> element.getText().equals(item))
+				.findFirst();
 			assertThat(match).isPresent();
 			match.get().click();
 			return this;

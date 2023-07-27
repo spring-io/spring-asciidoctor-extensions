@@ -46,48 +46,48 @@ class ConfigurationPropertyInlineMacroProcessorTests {
 	@Test
 	void whenPropertyThatExistsIsReferencedADebugMessageIsLogged() {
 		assertThat(convert("Using the property configprop:example.property.alpha[]"))
-				.contains("<code>example.property.alpha</code>");
+			.contains("<code>example.property.alpha</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG);
 	}
 
 	@Test
 	void whenPropertyIsWithinAMapPropertyThatExistsADebugMessageIsLogged() {
 		assertThat(convert("configprop:example.property.delta.a.b.c[]"))
-				.contains("<code>example.property.delta.a.b.c</code>");
+			.contains("<code>example.property.delta.a.b.c</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG);
 		assertThat(this.logRecords).extracting(LogRecord::getMessage)
-				.containsExactly("Configuration property 'example.property.delta.a.b.c' successfully validated.");
+			.containsExactly("Configuration property 'example.property.delta.a.b.c' successfully validated.");
 	}
 
 	@Test
 	void whenPropertyIsReferencedAndEnvvarFormatIsSpecifiedTheOutputIsAllUpperCase() {
 		assertThat(convert("Using the property configprop:example.property.alpha[format=envvar]"))
-				.contains("<code>EXAMPLE_PROPERTY_ALPHA</code>");
+			.contains("<code>EXAMPLE_PROPERTY_ALPHA</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG);
 	}
 
 	@Test
 	void whenPropertyIsWithinAMapPropertyAndEnvvarFormatIsSpecifiedTheOutputIsAllUpperCase() {
 		assertThat(convert("configprop:example.property.delta.a.b.c[format=envvar]"))
-				.contains("<code>EXAMPLE_PROPERTY_DELTA_A_B_C</code>");
+			.contains("<code>EXAMPLE_PROPERTY_DELTA_A_B_C</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG);
 		assertThat(this.logRecords).extracting(LogRecord::getMessage)
-				.containsExactly("Configuration property 'example.property.delta.a.b.c' successfully validated.");
+			.containsExactly("Configuration property 'example.property.delta.a.b.c' successfully validated.");
 	}
 
 	@Test
 	void whenConversionIsPerformedMultipleTimesThenFormatAttributeIsHonoured() {
 		assertThat(convert("Using the property configprop:example.property.alpha[format=envvar]"))
-				.contains("<code>EXAMPLE_PROPERTY_ALPHA</code>");
+			.contains("<code>EXAMPLE_PROPERTY_ALPHA</code>");
 		assertThat(convert("Using the property configprop:example.property.alpha[format=envvar]"))
-				.contains("<code>EXAMPLE_PROPERTY_ALPHA</code>");
+			.contains("<code>EXAMPLE_PROPERTY_ALPHA</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG, Severity.DEBUG);
 	}
 
 	@Test
 	void whenDeprecatedPropertyIsReferencedAsDeprecatedAndEnvvarFormatIsSpecifiedTheOutputIsAllUpperCase() {
 		assertThat(convert("Using the property configprop:example.property.bravo[deprecated,format=envvar]"))
-				.contains("<code>EXAMPLE_PROPERTY_BRAVO</code>");
+			.contains("<code>EXAMPLE_PROPERTY_BRAVO</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG);
 	}
 
@@ -96,16 +96,16 @@ class ConfigurationPropertyInlineMacroProcessorTests {
 		assertThat(convert("configprop:does.not.exist[]")).contains("<code>does.not.exist</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.WARN);
 		assertThat(this.logRecords).extracting(LogRecord::getMessage)
-				.containsExactly("Configuration property 'does.not.exist' not found.");
+			.containsExactly("Configuration property 'does.not.exist' not found.");
 	}
 
 	@Test
 	void whenPropertyThatIsDeprecatedIsReferencedAsDeprecatedADebugMessageIsLogged() {
 		assertThat(convert("configprop:example.property.bravo[deprecated]"))
-				.contains("<code>example.property.bravo</code>");
+			.contains("<code>example.property.bravo</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG);
 		assertThat(this.logRecords).extracting(LogRecord::getMessage)
-				.containsExactly("Configuration property 'example.property.bravo' successfully validated.");
+			.containsExactly("Configuration property 'example.property.bravo' successfully validated.");
 	}
 
 	@Test
@@ -113,16 +113,16 @@ class ConfigurationPropertyInlineMacroProcessorTests {
 		assertThat(convert("configprop:example.property.bravo[]")).contains("<code>example.property.bravo</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.WARN);
 		assertThat(this.logRecords).extracting(LogRecord::getMessage)
-				.containsExactly("Configuration property 'example.property.bravo' is deprecated.");
+			.containsExactly("Configuration property 'example.property.bravo' is deprecated.");
 	}
 
 	@Test
 	void whenPropertyThatIsNotDeprecatedIsReferencedAsDeprecatedAWarningIsLogged() {
 		assertThat(convert("configprop:example.property.charlie[deprecated]"))
-				.contains("<code>example.property.charlie</code>");
+			.contains("<code>example.property.charlie</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.WARN);
 		assertThat(this.logRecords).extracting(LogRecord::getMessage)
-				.containsExactly("Configuration property 'example.property.charlie' is not deprecated.");
+			.containsExactly("Configuration property 'example.property.charlie' is not deprecated.");
 	}
 
 	private String convert(String source) {

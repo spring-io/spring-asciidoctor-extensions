@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2021 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,10 +55,10 @@ class SectionIdsTreeprocessorTests {
 		convert(new String(Files.readAllBytes(adocFile.toPath()), StandardCharsets.UTF_8));
 		assertThat(this.logRecords).hasSize(3);
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsOnly(Severity.WARN);
-		assertThat(this.logRecords).extracting(LogRecord::getMessage).containsExactly(
-				"Top-level section ID 'snake_case' should use kebab-case",
-				"Top-level section ID 'trailing-dash-kebab-case-' should use kebab-case",
-				"Top-level section ID 'double--dash-kebab-case' should use kebab-case");
+		assertThat(this.logRecords).extracting(LogRecord::getMessage)
+			.containsExactly("Top-level section ID 'snake_case' should use kebab-case",
+					"Top-level section ID 'trailing-dash-kebab-case-' should use kebab-case",
+					"Top-level section ID 'double--dash-kebab-case' should use kebab-case");
 	}
 
 	@Test
@@ -68,11 +68,11 @@ class SectionIdsTreeprocessorTests {
 		convert(new String(Files.readAllBytes(adocFile.toPath()), StandardCharsets.UTF_8));
 		assertThat(this.logRecords).hasSize(4);
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsOnly(Severity.WARN);
-		assertThat(this.logRecords).extracting(LogRecord::getMessage).containsExactly(
-				"Section ID 'parent-id.child-one-grandchild-two' should start with 'parent-id.child-one.'",
-				"'grandchild_three' tail of section ID 'parent-id.child-one.grandchild_three' should use kebab-case",
-				"Section ID 'parent-id-child-two' should start with 'parent-id.'",
-				"'child_three' tail of section ID 'parent-id.child_three' should use kebab-case");
+		assertThat(this.logRecords).extracting(LogRecord::getMessage)
+			.containsExactly("Section ID 'parent-id.child-one-grandchild-two' should start with 'parent-id.child-one.'",
+					"'grandchild_three' tail of section ID 'parent-id.child-one.grandchild_three' should use kebab-case",
+					"Section ID 'parent-id-child-two' should start with 'parent-id.'",
+					"'child_three' tail of section ID 'parent-id.child_three' should use kebab-case");
 	}
 
 	private String convert(String source) {

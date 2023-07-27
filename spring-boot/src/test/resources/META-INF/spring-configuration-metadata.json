@@ -9,6 +9,10 @@
 		},
 		{
 			"name": "example.property.charlie"
-		}
+		},
+		{
+      		"name": "example.property.delta",
+      		"type": "java.util.Map<java.lang.String,java.lang.Boolean>"
+      	}
 	]
 }

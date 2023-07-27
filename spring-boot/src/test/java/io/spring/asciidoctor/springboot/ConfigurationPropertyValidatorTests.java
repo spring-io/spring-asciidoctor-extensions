@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2021 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,6 +89,15 @@ class ConfigurationPropertyValidatorTests {
 		assertThat(this.logger).warnMessages()
 				.containsExactly("Configuration property 'project.a.bravo-property' is deprecated.");
 		assertThat(this.logger).debugMessages().isEmpty();
+	}
+
+	@Test
+	void whenPropertyNotInTheMetadataHasAMapAncestorValidatePropertyReturnsAndLogsTheFullPropertyName() {
+		assertThat(this.validator.validateProperty("project.a.charlie.beneath-map",
+				new ValidationSettings(false, Format.CANONICAL))).isEqualTo("project.a.charlie.beneath-map");
+		assertThat(this.logger).warnMessages().isEmpty();
+		assertThat(this.logger).debugMessages()
+				.containsExactly("Configuration property 'project.a.charlie.beneath-map' successfully validated.");
 	}
 
 }

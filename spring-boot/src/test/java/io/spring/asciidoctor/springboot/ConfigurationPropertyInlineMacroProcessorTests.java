@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 the original author or authors.
+ * Copyright 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,10 +51,28 @@ class ConfigurationPropertyInlineMacroProcessorTests {
 	}
 
 	@Test
+	void whenPropertyIsWithinAMapPropertyThatExistsADebugMessageIsLogged() {
+		assertThat(convert("configprop:example.property.delta.a.b.c[]"))
+				.contains("<code>example.property.delta.a.b.c</code>");
+		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG);
+		assertThat(this.logRecords).extracting(LogRecord::getMessage)
+				.containsExactly("Configuration property 'example.property.delta.a.b.c' successfully validated.");
+	}
+
+	@Test
 	void whenPropertyIsReferencedAndEnvvarFormatIsSpecifiedTheOutputIsAllUpperCase() {
 		assertThat(convert("Using the property configprop:example.property.alpha[format=envvar]"))
 				.contains("<code>EXAMPLE_PROPERTY_ALPHA</code>");
 		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG);
+	}
+
+	@Test
+	void whenPropertyIsWithinAMapPropertyAndEnvvarFormatIsSpecifiedTheOutputIsAllUpperCase() {
+		assertThat(convert("configprop:example.property.delta.a.b.c[format=envvar]"))
+				.contains("<code>EXAMPLE_PROPERTY_DELTA_A_B_C</code>");
+		assertThat(this.logRecords).extracting(LogRecord::getSeverity).containsExactly(Severity.DEBUG);
+		assertThat(this.logRecords).extracting(LogRecord::getMessage)
+				.containsExactly("Configuration property 'example.property.delta.a.b.c' successfully validated.");
 	}
 
 	@Test

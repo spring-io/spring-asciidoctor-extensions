@@ -1,4 +1,8 @@
-apply plugin: 'maven-publish'
+plugins {
+	id 'io.spring.compatibility-test' version '0.0.2'
+	id 'maven-publish'
+}
+
 apply from: "$rootDir/gradle/publish-maven.gradle"
 
 description = "Section IDs Asciidoctor Extension"
@@ -13,5 +17,20 @@ publishing {
 		maven(MavenPublication) { publication ->
 			from components.java
 		}
+	}
+}
+
+compatibilityTest {
+	useJUnitPlatform()
+	dependency('AsciidoctorJ') { asciidoctorj ->
+		asciidoctorj.groupId = 'org.asciidoctor'
+		asciidoctorj.artifactId = 'asciidoctorj'
+		asciidoctorj.versions = [
+			asciidoctorj20Version,
+			asciidoctorj21Version,
+			asciidoctorj22Version,
+			asciidoctorj23Version,
+			asciidoctorj24Version
+		]
 	}
 }

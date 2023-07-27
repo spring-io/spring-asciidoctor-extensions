@@ -25,6 +25,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 
 import org.asciidoctor.Asciidoctor;
+import org.asciidoctor.Attributes;
 import org.asciidoctor.Options;
 import org.asciidoctor.SafeMode;
 import org.assertj.core.api.AbstractAssert;
@@ -193,6 +194,9 @@ public class BlockSwitchIntegrationTests {
 		Options options = new Options();
 		options.setHeaderFooter(true);
 		options.setSafe(SafeMode.SERVER);
+		Attributes attributes = new Attributes();
+		attributes.setAttribute("!webfonts", null);
+		options.setAttributes(attributes);
 		String converted = Asciidoctor.Factory.create()
 			.convert(new String(Files.readAllBytes(Paths.get("src", "test", "resources", adocFile)),
 					StandardCharsets.UTF_8), options);

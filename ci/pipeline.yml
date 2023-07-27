@@ -2,6 +2,8 @@ resource_types:
 - name: artifactory-resource
   type: registry-image
   source:
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
     repository: springio/artifactory-resource
     tag: 0.0.17
 resources:
@@ -45,10 +47,6 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     tag: ((branch))
-    registry_mirror:
-      host: ((docker-hub-mirror))
-      username: ((docker-hub-mirror-username))
-      password: ((docker-hub-mirror-password))
 - name: artifactory-repo
   type: artifactory-resource
   icon: package-variant
@@ -70,9 +68,6 @@ jobs:
       image: ci-image
     vars:
       ci-image-name: ci-image
-      docker-hub-mirror: ((docker-hub-mirror))
-      docker-hub-mirror-username: ((docker-hub-mirror-username))
-      docker-hub-mirror-password: ((docker-hub-mirror-password))
   - put: ci-image
     params:
       image: ci-image/image.tar
@@ -195,17 +190,17 @@ jobs:
       ARTIFACTORY_SERVER: ((artifactory-server))
       ARTIFACTORY_USERNAME: ((artifactory-username))
       ARTIFACTORY_PASSWORD: ((artifactory-password))
-  - task: generate-release-notes
-    file: git-repo/ci/tasks/generate-release-notes.yml
+  - task: generate-changelog
+    file: git-repo/ci/tasks/generate-changelog.yml
     params:
       RELEASE_TYPE: M
       GITHUB_USERNAME: ((github-username))
       GITHUB_TOKEN: ((github-ci-release-token))
   - put: github-pre-release
     params:
-      name: generated-release-notes/tag
-      tag: generated-release-notes/tag
-      body: generated-release-notes/release-notes.md
+      name: generated-changelog/tag
+      tag: generated-changelog/tag
+      body: generated-changelog/changelog.md
 - name: promote-rc
   serial: true
   plan:
@@ -223,17 +218,17 @@ jobs:
       ARTIFACTORY_SERVER: ((artifactory-server))
       ARTIFACTORY_USERNAME: ((artifactory-username))
       ARTIFACTORY_PASSWORD: ((artifactory-password))
-  - task: generate-release-notes
-    file: git-repo/ci/tasks/generate-release-notes.yml
+  - task: generate-changelog
+    file: git-repo/ci/tasks/generate-changelog.yml
     params:
       RELEASE_TYPE: RC
       GITHUB_USERNAME: ((github-username))
       GITHUB_TOKEN: ((github-ci-release-token))
   - put: github-pre-release
     params:
-      name: generated-release-notes/tag
-      tag: generated-release-notes/tag
-      body: generated-release-notes/release-notes.md
+      name: generated-changelog/tag
+      tag: generated-changelog/tag
+      body: generated-changelog/changelog.md
 - name: promote-release
   serial: true
   plan:
@@ -255,17 +250,17 @@ jobs:
       ARTIFACTORY_SERVER: ((artifactory-server))
       ARTIFACTORY_USERNAME: ((artifactory-username))
       ARTIFACTORY_PASSWORD: ((artifactory-password))
-  - task: generate-release-notes
-    file: git-repo/ci/tasks/generate-release-notes.yml
+  - task: generate-changelog
+    file: git-repo/ci/tasks/generate-changelog.yml
     params:
       RELEASE_TYPE: RELEASE
       GITHUB_USERNAME: ((github-username))
       GITHUB_TOKEN: ((github-ci-release-token))
   - put: github-release
     params:
-      name: generated-release-notes/tag
-      tag: generated-release-notes/tag
-      body: generated-release-notes/release-notes.md
+      name: generated-changelog/tag
+      tag: generated-changelog/tag
+      body: generated-changelog/changelog.md
 groups:
 - name: "builds"
   jobs: ["build"]

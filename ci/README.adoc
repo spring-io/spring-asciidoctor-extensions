@@ -14,5 +14,4 @@ The pipeline can be deployed using the following command:
 $ fly -t spring-asciidoctor-extensions set-pipeline -p spring-asciidoctor-extensions -c ci/pipeline.yml -l ci/parameters.yml
 ----
 
-NOTE: This assumes that you have credhub integration configured with the appropriate
-secrets.
+NOTE: This assumes that you have Vault integration configured with the appropriate secrets.

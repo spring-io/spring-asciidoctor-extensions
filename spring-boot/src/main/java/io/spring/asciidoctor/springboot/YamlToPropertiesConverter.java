@@ -34,6 +34,7 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -208,7 +209,7 @@ public class YamlToPropertiesConverter {
 				StringWriter writer = new StringWriter();
 				store(writer, null);
 				List<String> lines = Arrays.stream(writer.toString().split("\n"))
-					.map(this::postProcess)
+					.flatMap(this::postProcess)
 					.collect(Collectors.toList());
 				lines.remove(0);
 				return lines;
@@ -218,21 +219,21 @@ public class YamlToPropertiesConverter {
 			}
 		}
 
-		private String postProcess(String line) {
+		private Stream<String> postProcess(String line) {
 			int split = line.indexOf('=');
 			if (split == -1) {
-				return line;
+				return Stream.of(line);
 			}
 			String name = line.substring(0, split);
-			String value = line.substring(split);
+			String value = line.substring(split + 1);
 			if (name.contains(BLANK_LINE)) {
-				return "";
+				return Stream.of("");
 			}
 			if (name.contains(COMMENT)) {
 				try {
 					Properties properties = new Properties();
 					properties.load(new ByteArrayInputStream(line.getBytes(StandardCharsets.UTF_8)));
-					return (String) properties.values().iterator().next();
+					return Stream.of((String) properties.values().iterator().next());
 				}
 				catch (IOException ex) {
 					throw new IllegalStateException(ex);
@@ -240,7 +241,17 @@ public class YamlToPropertiesConverter {
 			}
 			value = value.replace("\\:", ":");
 			value = value.replace("\\=", "=");
-			return name + value;
+			if (!value.contains("\\n")) {
+				return Stream.of(name + "=" + value);
+			}
+
+			List<String> multilines = new ArrayList<>(Arrays.asList(value.split("\\\\n")));
+			for (int i = 0; i < multilines.size(); i++) {
+				boolean last = i == multilines.size() - 1;
+				multilines.set(i, multilines.get(i) + "\\n" + ((!last) ? "\\" : ""));
+			}
+			multilines.add(0, name + "=\\");
+			return multilines.stream();
 		}
 
 	}

@@ -24,10 +24,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -37,6 +36,7 @@ import com.google.gson.reflect.TypeToken;
  * Configuration properties read from {@code META-INF/spring-configuration-metadata.json}.
  *
  * @author Andy Wilkinson
+ * @author Moritz Halbritter
  */
 public final class ConfigurationProperties {
 
@@ -44,9 +44,23 @@ public final class ConfigurationProperties {
 
 	private final Map<String, ConfigurationProperty> properties;
 
-	private ConfigurationProperties(Collection<ConfigurationProperty> properties) {
-		this.properties = properties.stream()
-			.collect(Collectors.toMap(ConfigurationProperty::getName, Function.identity()));
+	private final Logger logger;
+
+	private ConfigurationProperties(Logger logger, Collection<ConfigurationProperty> properties) {
+		this.logger = logger;
+		this.properties = indexProperties(properties);
+	}
+
+	private Map<String, ConfigurationProperty> indexProperties(Collection<ConfigurationProperty> properties) {
+		Map<String, ConfigurationProperty> result = new HashMap<>(properties.size());
+		for (ConfigurationProperty property : properties) {
+			if (result.containsKey(property.getName())) {
+				this.logger.warn(String.format("Ignoring duplicate configuration property '%s'", property.getName()));
+				continue;
+			}
+			result.put(property.getName(), property);
+		}
+		return result;
 	}
 
 	public int size() {
@@ -79,7 +93,7 @@ public final class ConfigurationProperties {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static ConfigurationProperties fromClasspath(ClassLoader classLoader) {
+	public static ConfigurationProperties fromClasspath(Logger logger, ClassLoader classLoader) {
 		List<ConfigurationProperty> configurationProperties = new ArrayList<>();
 		try {
 			Enumeration<URL> resources = classLoader.getResources("META-INF/spring-configuration-metadata.json");
@@ -95,7 +109,7 @@ public final class ConfigurationProperties {
 					}
 				}
 			}
-			return new ConfigurationProperties(configurationProperties);
+			return new ConfigurationProperties(logger, configurationProperties);
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("Failed to load configuration metadata", ex);

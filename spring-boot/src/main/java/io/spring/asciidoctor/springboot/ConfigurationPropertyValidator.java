@@ -36,7 +36,8 @@ public class ConfigurationPropertyValidator {
 	private final Logger logger;
 
 	public ConfigurationPropertyValidator(Logger logger) {
-		this(logger, ConfigurationProperties.fromClasspath(ConfigurationPropertyValidator.class.getClassLoader()));
+		this(logger,
+				ConfigurationProperties.fromClasspath(logger, ConfigurationPropertyValidator.class.getClassLoader()));
 	}
 
 	ConfigurationPropertyValidator(Logger logger, ConfigurationProperties configurationProperties) {

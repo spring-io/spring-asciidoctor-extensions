@@ -29,13 +29,15 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Tests for {@link ConfigurationProperties}.
  *
  * @author Andy Wilkinson
+ * @author Moritz Halbritter
  */
 class ConfigurationPropertiesTests {
 
 	@Test
 	void loadMetadataFromSingleSource() throws MalformedURLException {
-		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(new URLClassLoader(
-				new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }, null));
+		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(new TestLogger(),
+				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() },
+						null));
 		assertThat(configurationProperties.size()).isEqualTo(3);
 		assertThat(configurationProperties.find("project.a.alpha")).isNotNull();
 		assertThat(configurationProperties.find("project.a.bravo-property")).isNotNull();
@@ -44,7 +46,7 @@ class ConfigurationPropertiesTests {
 
 	@Test
 	void loadMetadataFromMultipleSources() throws MalformedURLException {
-		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
+		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(new TestLogger(),
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL(),
 						new File("src/test/resources/metadata/project-b").toURI().toURL() }, null));
 		assertThat(configurationProperties.find("project.a.alpha")).isNotNull();
@@ -58,49 +60,49 @@ class ConfigurationPropertiesTests {
 
 	@Test
 	void whenPropertyIsNotDeprecatedInMetadataIsDeprecatedReturnsFalse() throws MalformedURLException {
-		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
+		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(new TestLogger(),
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.alpha").isDeprecated()).isFalse();
 	}
 
 	@Test
 	void whenPropertyIsDeprecatedInMetadataIsDeprecatedReturnsTrue() throws MalformedURLException {
-		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
+		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(new TestLogger(),
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.bravo-property").isDeprecated()).isTrue();
 	}
 
 	@Test
 	void whenPropertyIsAMapInMetadataIsMapReturnsTrue() throws MalformedURLException {
-		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
+		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(new TestLogger(),
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.charlie").isMap()).isTrue();
 	}
 
 	@Test
 	void whenPropertyIsNotAMapInMetadataIsMapReturnsFalse() throws MalformedURLException {
-		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
+		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(new TestLogger(),
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.alpha").isMap()).isFalse();
 	}
 
 	@Test
 	void whenPropertyNotInTheMetadataHasAMapAncestorItCanBeFound() throws MalformedURLException {
-		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
+		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(new TestLogger(),
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.charlie.beneath-map")).isNotNull();
 	}
 
 	@Test
 	void whenPropertyNotInTheMetadataHasANonMapAncestorItCannotBeFound() throws MalformedURLException {
-		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
+		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(new TestLogger(),
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.alpha.beneath-non-map")).isNull();
 	}
 
 	@Test
 	void whenPropertyInTheMetadataIsSearchedForWithArrayIndexSuffixItCanBeFound() throws MalformedURLException {
-		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
+		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(new TestLogger(),
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		ConfigurationProperty property = configurationProperties.find("project.a.alpha[2]");
 		assertThat(property).isNotNull();
@@ -109,9 +111,19 @@ class ConfigurationPropertiesTests {
 
 	@Test
 	void whenPropertyNotInTheMetadataIsSearchedForWithArrayIndexSuffixItCannotBeFound() throws MalformedURLException {
-		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(
+		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(new TestLogger(),
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() }));
 		assertThat(configurationProperties.find("project.a.delta[2]")).isNull();
+	}
+
+	@Test
+	void shouldNotFailOnDuplicateProperties() throws MalformedURLException {
+		TestLogger logger = new TestLogger();
+		ConfigurationProperties configurationProperties = ConfigurationProperties.fromClasspath(logger,
+				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL(),
+						new File("src/test/resources/metadata/project-c").toURI().toURL() }, null));
+		logger.assertThat().warnMessages().contains("Ignoring duplicate configuration property 'project.a.alpha'");
+		assertThat(configurationProperties.find("project.a.alpha")).isNotNull();
 	}
 
 }

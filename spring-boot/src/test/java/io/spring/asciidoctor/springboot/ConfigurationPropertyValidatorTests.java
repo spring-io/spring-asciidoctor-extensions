@@ -39,6 +39,7 @@ class ConfigurationPropertyValidatorTests {
 
 	ConfigurationPropertyValidatorTests() throws MalformedURLException {
 		this.validator = new ConfigurationPropertyValidator(this.logger, ConfigurationProperties.fromClasspath(
+				new TestLogger(),
 				new URLClassLoader(new URL[] { new File("src/test/resources/metadata/project-a").toURI().toURL() })));
 	}
 
